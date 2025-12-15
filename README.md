@@ -278,3 +278,15 @@ The system follows a **layered abstraction model**:
 ## 6. 📖 Conclusion
 LearningClub–Key-of-Success–Learning-Point Repository is not just a static learning site but a **scalable educational framework**. Its modular design, offline capabilities, AI integration readiness, and SEO-aware architecture make it future-proof and adaptable. The repository serves as a strong foundation for personal learning, institutional deployment, or transformation into a full-fledged EdTech platform.
 
+# Project Outline-
+## index.htm (Simple Description)
+
+`index.htm` is the **main home page** of the LearningClub project.  
+It is the first page that opens when a user visits the website.
+
+This page automatically loads the **header, footer, sidebar, and SEO meta tags** using loader JavaScript files, so the same layout is used on all pages. A **menu logo** works as a button to open and close the sidebar.
+
+The home page shows the **latest learning resources (up to 10 cards)** and provides a link to explore more resources.  
+Login or sign-up is **not required** to read resources, but users can optionally create an account using a **single-page (SPA) form**. User data is stored safely in **browser local storage**.
+
+Overall, `index.htm` acts as the **entry point, navigation hub, and introduction page** of LearningClub.

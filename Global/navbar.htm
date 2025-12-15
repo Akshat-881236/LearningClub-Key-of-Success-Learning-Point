@@ -1,0 +1,38 @@
+<nav class="global-navbar">
+
+  <!-- LEFT : INTRO + GREETING -->
+  <div class="nav-left">
+    <h1 class="site-title">Learning Club</h1>
+    <p class="user-greeting" id="user-greeting">
+      Welcome, Guest
+    </p>
+  </div>
+
+  <!-- CENTER : DATE & TIME -->
+  <div class="nav-center">
+    <span id="live-date"></span>
+    <span id="live-time"></span>
+  </div>
+
+  <!-- RIGHT : QUICK ACTIONS -->
+  <div class="nav-right">
+    <button id="nav-notification">🔔</button>
+    <button id="nav-account-btn">Account</button>
+    <a class="download-btn" href="#" title="Download App">
+      ⬇ App
+    </a>
+  </div>
+  <!-- Notification Centre -->
+<div id="notification-centre" class="notify hidden">
+
+  <div class="notify-header">
+    <span>Notifications</span>
+    <button id="clear-notify">Clear</button>
+  </div>
+
+  <div class="notify-body" id="notify-list">
+    <!-- Notifications injected by JS -->
+  </div>
+
+</div>
+</nav>

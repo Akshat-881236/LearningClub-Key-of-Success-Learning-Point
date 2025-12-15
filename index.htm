@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO injected later -->
+  <!-- <script src="Global/SEOLoader.js"></script> -->
+
+  <title>LearningClub | Key of Success</title>
+
+  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="manifest" href="Offline/App/manifest.json"> -->
+</head>
+
+<body>
+
+<!-- GLOBAL HEADER -->
+<header id="global-header">
+  <!-- Injected by Global/Loader.js -->
+</header>
+
+<!-- MENU LOGO -->
+<div id="menu-logo" title="Open Menu">
+  <img src="/LearningClub-Key-of-Success-Learning-Point/Assets/Icon.png" alt="Menu">
+</div>
+
+<!-- GLOBAL SIDEBAR -->
+<aside id="sidebar" class="sidebar hidden">
+  <!-- Injected by Global/Loader.js -->
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="spa-root">
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="/LearningClub-Key-of-Success-Learning-Point/Assets/Logo.png" alt="Learning Club Official Logo">
+    <h1>LearningClub</h1>
+    <p>Free Learning • No Mandatory Login • Offline Friendly</p>
+
+    <div class="hero-actions">
+      <button id="open-auth-manual">Access Account</button>
+      <button onclick="location.href='Main/Resource.htm'">Browse Resources</button>
+    </div>
+  </section>
+
+  <!-- LATEST RESOURCES (STATIC – 6 ONLY) -->
+  <section class="resources">
+    <h2>Latest Learning Resources</h2>
+
+    <div class="resource-grid">
+
+      <div class="resource-card">
+        <h3>Operating System Basics</h3>
+        <p>Processes, Memory, Scheduling</p>
+        <span>Computer Science</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>DBMS Fundamentals</h3>
+        <p>ER Model, Keys, Normalization</p>
+        <span>Computer Science</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>Digital Electronics</h3>
+        <p>Logic Gates, Flip-Flops</p>
+        <span>Electronics</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>Python for Data Science</h3>
+        <p>Numpy, Pandas, Basics</p>
+        <span>Programming</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>HTML & CSS</h3>
+        <p>Responsive Web Design</p>
+        <span>Web Development</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>AI & Ethics</h3>
+        <p>Responsible AI Concepts</p>
+        <span>Artificial Intelligence</span>
+        <a href="Main/Resource.htm">Open</a>
+      </div>
+
+    </div>
+
+    <div class="more-link">
+      <a href="Main/Resource.htm">Explore All Resources →</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- AUTH SPA MODAL (HIDDEN BY DEFAULT) -->
+<div id="auth-spa-modal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <h3 id="auth-title">Account Access</h3>
+
+    <!-- MODE SWITCH -->
+    <div class="auth-tabs">
+      <button data-mode="login">Login</button>
+      <button data-mode="signup">Sign Up</button>
+      <button data-mode="recover">Recover</button>
+    </div>
+
+    <!-- COMMON FIELDS -->
+    <input id="auth-email" type="email" placeholder="Email">
+    <input id="auth-password" type="password" placeholder="Password">
+
+    <!-- SIGNUP ONLY -->
+    <div class="signup-only hidden">
+      <input id="auth-name" placeholder="Name">
+      <input id="auth-contact" placeholder="Contact Number">
+      <input id="auth-age" type="number" placeholder="Age (18+)">
+      <input id="auth-confirm" type="password" placeholder="Confirm Password">
+    </div>
+
+    <!-- CAPTCHA -->
+    <div class="captcha">
+      <span id="captcha-box"></span>
+      <input id="captcha-input" placeholder="Captcha">
+    </div>
+
+    <!-- ACTION -->
+    <button id="auth-submit">Continue</button>
+
+    <!-- SESSION -->
+    <button id="logout-btn" class="hidden">Logout</button>
+
+    <button id="close-auth">Close</button>
+
+    <!-- SYSTEM INFO -->
+    <small class="auth-note">
+      • Multiple accounts supported<br>
+      • Duplicate email restricted<br>
+      • All data stored locally
+    </small>
+
+  </div>
+</div>
+
+<!-- GLOBAL FOOTER -->
+<footer id="global-footer">
+  <!-- Injected by Global/Loader.js -->
+</footer>
+
+<!-- CORE SCRIPT -->
+<script src="script.js"></script>
+
+<script src="/LearningClub-Key-of-Success-Learning-Point/Global/CombinedLoader.js"></script>
+
+<!-- PWA -->
+<!-- <script src="Offline/App/pwa.js"></script> -->
+
+</body>
+</html>
