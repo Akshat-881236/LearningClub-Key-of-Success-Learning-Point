@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Print Policy | Akshat Network Hub</title>
+<style>
+  body {
+    font-family: Inter, sans-serif;
+    background: #f9fafc;
+    color: #222;
+    text-align: center;
+    padding-top: 20vh;
+  }
+  h1 { color: #c00; }
+  a {
+    color: #0b4f6c;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <h1>⚠ Printing Restricted</h1>
+  <p>Printing of this document is not permitted under the Akshat Network Hub Policy.</p>
+  <p>Please download the authorized watermarked version instead.</p>
+
+  <p id="back-link">
+    <a href="/LearningClub-Key-of-Success-Learning-Point/index.htm">Visit Homepage</a>
+  </p>
+
+  <script>
+    // Get 'from' parameter from URL
+    const params = new URLSearchParams(window.location.search);
+    const fromPage = params.get("from");
+
+    if (fromPage) {
+      const backLink = document.getElementById("back-link");
+      const decoded = decodeURIComponent(fromPage);
+      backLink.innerHTML = `<a href="${decoded}">Return to Previous Page</a>`;
+    }
+  </script>
+</body>
+</html>

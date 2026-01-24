@@ -1,169 +1,328 @@
+<!--
+============================================================
+  Akshat Network Hub
+  Author   : Akshat Prasad
+  Identity : Akshat Network | Open Web Initiative
+  Purpose  : Educational, Informational, Non-commercial
+  License  : MIT
+  Note     : Auto-structured for SEO, tracking & consistency.
+============================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO injected later -->
-  <!-- <script src="Global/SEOLoader.js"></script> -->
+  <!-- Primary SEO -->
+  <title>Akshat Network Hub | Learning Club – A Hub of Knowledge</title>
+  <meta name="description" content="Akshat Network Hub – A unified learning ecosystem by Akshat Prasad. Explore educational tools, PDF resources, and innovation projects for open web education.">
+  <meta name="keywords" content="Akshat Network Hub, Akshat Prasad, Education, Learning Club, Technology, Open Web, Projects">
+  <meta name="author" content="Akshat Prasad">
+  <meta name="creator" content="Akshat Network Hub">
+  <meta name="publisher" content="Akshat Network Hub">
+  <meta name="robots" content="index, follow">
 
-  <title>LearningClub | Key of Success</title>
+  <!-- Authenticity & Identity -->
+  <link rel="me" href="https://github.com/akshat-881236">
+  <link rel="me" href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=akshat-prasad-b53936379">
+  <link rel="canonical" href="https://akshat-881236.github.io/">
 
-  <link rel="stylesheet" href="style.css">
-  <!-- <link rel="manifest" href="Offline/App/manifest.json"> -->
+  <!-- Open Graph -->
+  <meta property="og:title" content="Akshat Network Hub | Learning Club – A Hub of Knowledge">
+  <meta property="og:description" content="A unified system for education, open web tools, and projects by Akshat Prasad.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akshat-881236.github.io/">
+  <meta property="og:site_name" content="Akshat Network Hub">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Akshat Network Hub | Learning Club">
+  <meta name="twitter:description" content="Educational and innovative platform by Akshat Prasad.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="Assets/Icons/Icon.png" type="image/png">
+
+  <!-- Inline Styles -->
+  <style>
+    :root {
+      --main: #0b4f6c;
+      --bg: #f4f7fb;
+      --card-bg: #fff;
+      --accent: #1597e5;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: "Inter", sans-serif;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--main);
+      color: #fff;
+      text-align: center;
+      padding: 35px 10px 45px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    header img {
+      height: 120px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    header h1 { font-size: 1.8rem; margin: 0; }
+    header p { font-size: 1rem; opacity: 0.85; margin: 5px 0 0; }
+
+    .intro {
+      text-align: center;
+      padding: 40px 20px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .intro h2 { color: var(--main); margin-bottom: 10px; }
+    .intro p { color: #555; line-height: 1.6; }
+
+    #searchBar {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 25px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #searchInput {
+      width: 80%;
+      max-width: 500px;
+      padding: 12px 14px;
+      border: 2px solid var(--main);
+      border-radius: 10px;
+      outline: none;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    #searchInput:focus { box-shadow: 0 0 6px var(--accent); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px 20px 60px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
+    .card img { width: 100%; height: 160px; object-fit: cover; background: #eee; opacity: 0; transition: opacity 0.5s ease; }
+
+    .card-content { padding: 18px; }
+    .card h3 { margin: 0; color: var(--main); font-size: 1.2rem; }
+    .card p { margin: 8px 0; font-size: 0.95rem; color: #555; }
+    .tags { margin-top: 8px; font-size: 0.85rem; color: var(--accent); }
+
+    #viewMoreBtn {
+      display: none;
+      margin: 20px auto 60px;
+      background: var(--main);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #viewMoreBtn:hover { background: #093f56; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--main);
+      color: #fff;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      #searchInput { width: 90%; font-size: 0.9rem; }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- GLOBAL HEADER -->
-<header id="global-header">
-  <!-- Injected by Global/Loader.js -->
-</header>
+  <header>
+    <img src="Assets/Logoes/icon-256.png" alt="Learning Club Logo">
+    <h1>Learning Club – A Hub of Knowledge</h1>
+    <p>Powered by Akshat Network Hub | Open Web Initiative</p>
+  </header>
 
-<!-- MENU LOGO -->
-<div id="menu-logo" title="Open Menu">
-  <img src="/LearningClub-Key-of-Success-Learning-Point/Assets/Icon.png" alt="Menu">
-</div>
-
-<!-- GLOBAL SIDEBAR -->
-<aside id="sidebar" class="sidebar hidden">
-  <!-- Injected by Global/Loader.js -->
-</aside>
-
-<!-- MAIN CONTENT -->
-<main id="spa-root">
-
-  <!-- HERO -->
-  <section class="hero">
-    <img src="/LearningClub-Key-of-Success-Learning-Point/Assets/Logo.png" alt="Learning Club Official Logo">
-    <h1>LearningClub</h1>
-    <p>Free Learning • No Mandatory Login • Offline Friendly</p>
-
-    <div class="hero-actions">
-      <button id="open-auth-manual">Access Account</button>
-      <button onclick="location.href='Main/Resource.htm'">Browse Resources</button>
-    </div>
+  <section class="intro">
+    <h2>Welcome to Akshat Network Hub</h2>
+    <p>
+      Discover a unified system of educational and innovative tools built by <strong>Akshat Prasad</strong>.
+      This ecosystem integrates learning modules, PDF libraries, and AI-enhanced web utilities — 
+      all aimed at promoting structured learning and open-source education.
+    </p>
   </section>
 
-  <!-- LATEST RESOURCES (STATIC – 6 ONLY) -->
-  <section class="resources">
-    <h2>Latest Learning Resources</h2>
-
-    <div class="resource-grid">
-
-      <div class="resource-card">
-        <h3>Operating System Basics</h3>
-        <p>Processes, Memory, Scheduling</p>
-        <span>Computer Science</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-      <div class="resource-card">
-        <h3>DBMS Fundamentals</h3>
-        <p>ER Model, Keys, Normalization</p>
-        <span>Computer Science</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-      <div class="resource-card">
-        <h3>Digital Electronics</h3>
-        <p>Logic Gates, Flip-Flops</p>
-        <span>Electronics</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-      <div class="resource-card">
-        <h3>Python for Data Science</h3>
-        <p>Numpy, Pandas, Basics</p>
-        <span>Programming</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-      <div class="resource-card">
-        <h3>HTML & CSS</h3>
-        <p>Responsive Web Design</p>
-        <span>Web Development</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-      <div class="resource-card">
-        <h3>AI & Ethics</h3>
-        <p>Responsible AI Concepts</p>
-        <span>Artificial Intelligence</span>
-        <a href="Main/Resource.htm">Open</a>
-      </div>
-
-    </div>
-
-    <div class="more-link">
-      <a href="Main/Resource.htm">Explore All Resources →</a>
-    </div>
-  </section>
-
-</main>
-
-<!-- AUTH SPA MODAL (HIDDEN BY DEFAULT) -->
-<div id="auth-spa-modal" class="modal hidden">
-
-  <div class="modal-box">
-
-    <h3 id="auth-title">Account Access</h3>
-
-    <!-- MODE SWITCH -->
-    <div class="auth-tabs">
-      <button data-mode="login">Login</button>
-      <button data-mode="signup">Sign Up</button>
-      <button data-mode="recover">Recover</button>
-    </div>
-
-    <!-- COMMON FIELDS -->
-    <input id="auth-email" type="email" placeholder="Email">
-    <input id="auth-password" type="password" placeholder="Password">
-
-    <!-- SIGNUP ONLY -->
-    <div class="signup-only hidden">
-      <input id="auth-name" placeholder="Name">
-      <input id="auth-contact" placeholder="Contact Number">
-      <input id="auth-age" type="number" placeholder="Age (18+)">
-      <input id="auth-confirm" type="password" placeholder="Confirm Password">
-    </div>
-
-    <!-- CAPTCHA -->
-    <div class="captcha">
-      <span id="captcha-box"></span>
-      <input id="captcha-input" placeholder="Captcha">
-    </div>
-
-    <!-- ACTION -->
-    <button id="auth-submit">Continue</button>
-
-    <!-- SESSION -->
-    <button id="logout-btn" class="hidden">Logout</button>
-
-    <button id="close-auth">Close</button>
-
-    <!-- SYSTEM INFO -->
-    <small class="auth-note">
-      • Multiple accounts supported<br>
-      • Duplicate email restricted<br>
-      • All data stored locally
-    </small>
-
+  <!-- Search Bar -->
+  <div id="searchBar">
+    <input type="text" id="searchInput" placeholder="🔍 Search by title, description, tags, or links...">
   </div>
-</div>
 
-<!-- GLOBAL FOOTER -->
-<footer id="global-footer">
-  <!-- Injected by Global/Loader.js -->
-</footer>
+  <section class="grid" id="projectGrid"></section>
+  <button id="viewMoreBtn">View More Projects ↓</button>
 
-<!-- CORE SCRIPT -->
-<script src="script.js"></script>
+  <footer>© <span id="year"></span> Akshat Network Hub | All Rights Reserved.</footer>
 
-<script src="/LearningClub-Key-of-Success-Learning-Point/Global/CombinedLoader.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+  <script>
+    const pdfjsLib = window["pdfjs-dist/build/pdf"];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
-<!-- PWA -->
-<!-- <script src="Offline/App/pwa.js"></script> -->
+    const projects = [
+      {
+        title: "Akshat Network Hub - Html Boilerplate Code",
+        desc: "Official format and snippet of Akshat Network HTML Code.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/HtmlBolierPlate(For All Akshat Project).pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/AkshatHtmlBoilerPlate.htm",
+        tags: ["html", "template", "akshat network", "boilerplate"],
+        date: "2026-01-18"
+      },
+      {
+        title: "Privacy Compliance Report",
+        desc: "Data and privacy transparency framework ensuring user protection within Akshat Network Hub.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Privacy%20Compliance%20Report%20–%20Akshat%20Network%20Hub%20Ecosystem.pdf",
+        link: "PdfLibrary/PdfHtmlView/privacy.htm",
+        tags: ["privacy", "data", "compliance", "security"],
+        date: "2026-01-21"
+      },
+      {
+        title: "Quizzone Project Outline",
+        desc: "Developer documentation for Quizzone Project & Folder Structure.",
+        pdf: "https://akshat-881236.github.io/Quizzone/Documentary/Quizzone_Owner_Message.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/10thDMC.htm",
+        tags: ["Quizzone", "Owner Message", "Quizzone Manual", "guide"],
+        date: "2026-01-20"
+      },
+      {
+        title: "Matriculation Certificate",
+        desc: "Digitally Sign By Digilocker Marksheet of Akshat Prasad.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/10thDMC.pdf",
+        link: "PdfLibrary/PdfHtmlView/10thDMC.htm",
+        tags: ["10th DMC", "Board Exam", "Matriculation", "Secondary School Exam"],
+        date: "2026-01-22"
+      }
+    ];
 
+    // Sort by date (newest first)
+    projects.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    const grid = document.getElementById("projectGrid");
+    const searchInput = document.getElementById("searchInput");
+    const viewMoreBtn = document.getElementById("viewMoreBtn");
+    let visibleCount = 12;
+
+    async function renderProjects(filtered = projects) {
+      grid.innerHTML = "";
+      const visibleProjects = filtered.slice(0, visibleCount);
+      for (const p of visibleProjects) {
+        const card = document.createElement("div");
+        card.className = "card";
+        const imgID = `img-${p.title.replace(/\s+/g, "-")}`;
+        card.innerHTML = `
+          <img id="${imgID}" alt="${p.title}">
+          <div class="card-content">
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
+            <div class="tags">#${p.tags.join(" #")}</div>
+            <p><a href="${p.link}" target="_blank">Open PDF →</a></p>
+          </div>`;
+        grid.appendChild(card);
+
+        const cacheKey = `thumb-${p.pdf}`;
+        const cached = localStorage.getItem(cacheKey);
+        const imgEl = document.getElementById(imgID);
+        if (cached) {
+          imgEl.src = cached;
+          imgEl.style.opacity = "1";
+        } else {
+          try {
+            const pdf = await pdfjsLib.getDocument(p.pdf).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1.5 });
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.height = viewport.height / 2;
+            canvas.width = viewport.width;
+            await page.render({ canvasContext: ctx, viewport }).promise;
+            const halfCanvas = document.createElement("canvas");
+            halfCanvas.width = canvas.width;
+            halfCanvas.height = canvas.height / 2;
+            const halfCtx = halfCanvas.getContext("2d");
+            halfCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height / 2, 0, 0, halfCanvas.width, halfCanvas.height);
+            const imgData = halfCanvas.toDataURL("image/png");
+            imgEl.src = imgData;
+            imgEl.style.opacity = "1";
+            localStorage.setItem(cacheKey, imgData);
+          } catch {
+            imgEl.src = "Assets/Icons/Icon.png";
+            imgEl.style.opacity = "1";
+          }
+        }
+      }
+      viewMoreBtn.style.display = filtered.length > visibleCount ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", e => {
+      const q = e.target.value.toLowerCase();
+      const filtered = projects.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q) ||
+        p.tags.join(" ").toLowerCase().includes(q) ||
+        p.link.toLowerCase().includes(q) ||
+        p.pdf.toLowerCase().includes(q)
+      );
+      visibleCount = 12;
+      renderProjects(filtered);
+    });
+
+    viewMoreBtn.addEventListener("click", () => {
+      visibleCount += 12;
+      renderProjects();
+    });
+
+    renderProjects();
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Global Akshat Network Scripts -->
+  <script src="https://akshat-881236.github.io/TrackerJS/MITLicense-Term-of-Use--Privacy.min.js"></script>
+  <script src="https://akshat-881236.github.io/sitemapjs/breadcrumb.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/akshatnetworkhub.min.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/tracker.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/trackermeta.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/ui.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/index.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/akshat-add-nav.js"></script>
 </body>
 </html>

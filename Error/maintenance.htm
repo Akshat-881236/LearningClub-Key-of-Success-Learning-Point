@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Under Maintenance | Learning Club</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #0b4f6c, #020c14);
+    font-family: Inter, system-ui, sans-serif;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    animation: fadeIn 1.2s ease;
+    max-width: 520px;
+    padding: 30px;
+  }
+
+  .icon {
+    font-size: 90px;
+    color: #ffcc00;
+    animation: float 2.8s ease-in-out infinite;
+  }
+
+  h1 {
+    font-size: 3.2rem;
+    margin: 15px 0 10px;
+  }
+
+  p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+
+  .path {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    word-break: break-all;
+  }
+
+  .actions {
+    margin-top: 25px;
+  }
+
+  .btn {
+    display: inline-block;
+    margin: 8px;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #0b4f6c;
+    background: #ffcc00;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,.35);
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 12px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="icon"><i class="bi-tools"></i></div>
+  <h1>Under Maintenance</h1>
+    <p>
+        This section of Learning Club is currently undergoing maintenance.
+        Please check back shortly — improvements are in progress.
+    </p>
+
+
+  <div class="path" id="path"></div>
+
+  <div class="actions">
+    <a href="/LearningClub-Key-of-Success-Learning-Point/index.htm" class="btn"><i class="bi bi-house"></i> Home</a>
+    <a href="https://akshat-881236.github.io/AkshatNetworkHub/" class="btn">
+      <i class="bi bi-book"></i> Akshat Network Hub
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  © <span id="year"></span> Akshat Network Hub · Open Web Initiative
+</div>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get("from");
+
+  if (from) {
+    document.getElementById("path").textContent =
+      "Requested path: " + decodeURIComponent(from);
+  }
+
+  // Optional auto redirect after 15s
+  setTimeout(() => {
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/index.htm";
+  }, 15000);
+</script>
+
+</body>
+</html>
