@@ -14,7 +14,7 @@
   <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Akshat 10th DMC | Secure PDF Viewer</title>
+  <title>Term of Use - Akshat Network Hub | Secure PDF Viewer</title>
 
   <style>
     body {
@@ -151,7 +151,7 @@
 
   <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
 
-  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/12thDMC.pdf"></div>
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Terms%20of%20Use%20_%20Akshat%20Network%20Hub.pdf"></div>
 
   <!-- Floating Toolbar -->
   <div class="toolbar">
@@ -480,7 +480,7 @@
 
 })();
 
-/* ============================================================
+  /* ============================================================
    Akshat Network Hub
    Rich Dynamic PDF Sections + Edge-style Sidebar
    ============================================================ */
@@ -627,62 +627,35 @@
      2. Rich Content Map (2-page PDF)
      ------------------------------------------------------------ */
   const pageContentMap = {
-  1: {
-    content: `
-      <section class="page-content-section" id="section-page-1">
-        <h3>📊 Class 12 Result Overview & Performance Analysis</h3>
+    1: {
+      content: `
+        <section class="page-content-section" id="section-page-1">
+          <h3>📘 Document Overview</h3>
+          <div class="meta">Akshat Network Hub • HTML Foundation</div>
+          <span class="chip">SEO</span>
+          <span class="chip">Open Web</span>
+          <span class="chip">Boilerplate</span>
+          <p>
+            This page defines the <strong>Term of Use</strong> of the
+            Akshat Network Hub projects. It outlines the guidelines,
+            responsibilities, and legal considerations for users engaging.
+          </p>
+          <p>
+            By accessing or using any content from Akshat Network Hub,
+            users agree to comply with the terms specified herein. As of our 
+            <span style="font-weight:600;">Network Motto</span>, our goal is to
+            foster a secure, respectful, and innovative environment for all.
+            We use only open web standards to ensure accessibility and
+            compatibility across all platforms. Additionally any tool that create some data uses only 
+            <span style="font-weight:600;">client-side processing</span> to ensure user privacy and data security.
+            You can manage your data locally without any server interaction using our <a href="https://akshat-881236.github.io/Portfolio-881236/localStorage.htm" target="_blank" rel="noopener"><span style="font-weight:600; text-decoration:underline;">Local Storage Guide</span></a>. If the above link not open in new tab as per security policy, please click here : <a href="https://akshat-881236.github.io/Portfolio-881236/localStorage.htm" rel="noopener"><span style="font-weight:600; text-decoration:underline;"><code style="font-size:0.9rem;">https://akshat-881236.github.io/Portfolio-881236/localStorage.htm</code></span></a>.
+          </p>
+        </section>
+      `
+    }
+  };
 
-        <div class="meta">Secondary Examination • Academic Record</div>
-
-        <span class="chip">12th DMC</span>
-        <span class="chip">Academic Performance</span>
-        <span class="chip">Result Analysis</span>
-
-        <p>
-          This page represents the <strong>Class 12 Detailed Marks Certificate (DMC)</strong>,
-          which officially documents subject-wise performance, grading structure,
-          and overall academic standing in the secondary school examination.
-        </p>
-
-        <p>
-          The DMC reflects consistent participation across all core subjects,
-          indicating balanced curriculum coverage including language,
-          mathematics, physics, and chemistry.
-        </p>
-
-        <p>
-          <strong>Performance Analysis:</strong><br>
-          The subject-wise distribution of marks demonstrates the student’s
-          understanding of both theoretical concepts and practical application.
-          Strong alignment between internal assessment and board examination
-          scores suggests disciplined preparation and exam readiness.
-        </p>
-
-        <p>
-          Subjects involving analytical reasoning and conceptual clarity
-          indicate steady comprehension, while language and theory-based subjects
-          reflect reading, interpretation, and written expression skills.
-        </p>
-
-        <p>
-          <strong>Overall Interpretation:</strong><br>
-          The result indicates a stable academic foundation suitable for
-          progression into higher secondary education. The performance pattern
-          supports eligibility for multiple academic streams, depending on
-          institutional criteria and student interest.
-        </p>
-
-        <p style="font-size:0.9rem;opacity:0.85;margin-top:12px;">
-          📌 Note: This analysis is interpretative and intended for learning,
-          documentation, and presentation purposes within the Learning Club
-          ecosystem.
-        </p>
-      </section>
-    `
-  }
-};
-
-/* ------------------------------------------------------------
+  /* ------------------------------------------------------------
      3. Inject Content Around PDF Pages
      ------------------------------------------------------------ */
   /* ------------------------------------------------------------
@@ -734,8 +707,6 @@ const wait = setInterval(() => {
 
   buildSidebar(totalPages);
 }, 300);
-
-
 
   /* ------------------------------------------------------------
      4. Edge-style Sidebar Navigation

@@ -1,0 +1,86 @@
+<!--
+============================================================
+  Akshat Network Hub
+  Author   : Akshat Prasad
+  Identity : Akshat Network | Open Web Initiative
+  Purpose  : Educational, Informational, Non-commercial
+  License  : MIT
+  Note     : This file is auto-structured for SEO, tracking,
+             and network-wide consistency.
+============================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO -->
+  <title>Iframe Test | Akshat Network Hub</title>
+  <meta name="description" content="Page description for Akshat Network Hub">
+  <meta name="keywords" content="Akshat Network, Education, Technology, Open Web">
+  <meta name="author" content="Akshat Prasad">
+  <meta name="creator" content="Akshat Network Hub">
+  <meta name="publisher" content="Akshat Network Hub">
+  <meta name="robots" content="index, follow">
+
+  <!-- Authenticity & Identity -->
+  <link rel="me" href="https://github.com/akshat-881236">
+  <link rel="me" href="https://linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=akshat-prasad-b53936379">
+  <link rel="canonical" href="https://akshat-881236.github.io/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Iframe Test">
+  <meta property="og:description" content="Page description for Akshat Network Hub">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://akshat-881236.github.io/">
+  <meta property="og:site_name" content="Akshat Network Hub">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Iframe Test">
+  <meta name="twitter:description" content="Page description for Akshat Network Hub">
+  <script src="https://akshat-881236.github.io/TrackerJS/akshat-add-nav.js"></script>
+</head>
+<body>
+    <script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+  <!-- Page Content Start -->
+   <h1>Iframe Test Page</h1>
+   <dl>
+    <dt>IFrame Meaning : </dt>
+    <dd>An iframe (short for inline frame) is an HTML element that allows you to embed another HTML document within the current document. It creates a separate browsing context, which means that the content inside the iframe is isolated from the parent page. Iframes are commonly used to embed external content, such as videos, maps, advertisements, or other web pages, into a webpage without affecting the main page's structure or functionality.</dd>
+   </dl>
+    <!-- Below Iframe is embedded and not load in Iframe. Hack it to make it force fully access via javaScript-->
+     <script>
+      /*  More long and hard core hacking to forcefully load the content in iframe */
+      document.addEventListener("DOMContentLoaded", function() {
+          var iframe = document.querySelector("iframe");
+          iframe.onload = function() {
+              try {
+                  var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                  // Attempt to manipulate the iframe content
+                  iframeDoc.body.style.backgroundColor = "#f0f0f0"; // Example manipulation
+              } catch (e) {
+                  console.error("Unable to access iframe content due to cross-origin restrictions.");
+                  window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/cors.htm"; // Redirect to the cors URL
+              }
+          };
+      });
+     </script>
+    <iframe src="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneManual.htm" allowfullscreen height="800px" width="1000px"></iframe>
+  <!-- Page Content End -->
+
+  <!-- Global Akshat Network Scripts -->
+  <script src="https://akshat-881236.github.io/TrackerJS/MITLicense-Term-of-Use--Privacy.min.js"></script>
+  <script src="https://akshat-881236.github.io/sitemapjs/breadcrumb.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/redirect.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/akshatnetworkhub.min.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/tracker.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/trackermeta.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/ui.js"></script>
+  <script src="https://akshat-881236.github.io/TrackerJS/index.js"></script>
+
+</body>
+</html>

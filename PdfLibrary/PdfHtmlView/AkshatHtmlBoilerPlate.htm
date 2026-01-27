@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Akshat Network Hub - Boiler Plate | Secure PDF Viewer</title>
@@ -414,6 +415,8 @@
   /* --------- 3. BLOCK NEW TAB / WINDOW OPENING --------- */
   const originalOpen = window.open;
   window.open = function () {
+    alert("Opening new tabs or windows is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
     redirectViolation("New tab or window blocked");
     return null;
   };
@@ -422,6 +425,8 @@
     const a = e.target.closest("a");
     if (a && a.target === "_blank") {
       e.preventDefault();
+      alert("External navigation is restricted.");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
       redirectViolation("External navigation blocked");
     }
   });
@@ -429,6 +434,9 @@
   /* --------- 4. IFRAME EMBED BLOCK (FRAME BUSTING) --------- */
   if (window.top !== window.self) {
     redirectViolation("Iframe embedding blocked");
+    alert("This content cannot be displayed in an embedded frame.");
+    alert("Redirecting to secure viewer...");
+    window.top.location = window.self.location;
   }
 
   /* --------- 5. DEVTOOLS / INSPECT DETERRENCE --------- */
@@ -439,6 +447,10 @@
       (e.ctrlKey && e.key.toLowerCase() === "u")
     ) {
       e.preventDefault();
+      alert("Developer tools access is restricted.");
+      /* Redirecting User to /LearningClub-Key-of-Success-Learning-Point/Error/permission.htm */
+      alert("Redirecting to permission error page...");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
       redirectViolation("Developer tools blocked");
     }
   });
@@ -447,16 +459,22 @@
   document.addEventListener("selectstart", e => e.preventDefault());
   document.addEventListener("copy", e => {
     e.preventDefault();
+    alert("Copying content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
     redirectViolation("Copy action blocked");
   });
   document.addEventListener("cut", e => {
     e.preventDefault();
+    alert("Cutting content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
     redirectViolation("Cut action blocked");
   });
 
   /* --------- 7. CONTEXT MENU HARD BLOCK --------- */
   document.addEventListener("contextmenu", e => {
     e.preventDefault();
+    alert("Context menu access is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
     redirectViolation("Context menu blocked");
   });
 
