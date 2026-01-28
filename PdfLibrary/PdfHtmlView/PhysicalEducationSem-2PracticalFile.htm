@@ -304,7 +304,11 @@
         doc.addImage(img, "PNG", 0, 0, 210, 297);
         if (i < renderedPages.length - 1) doc.addPage();
       }
-      doc.save("Watermarked_AkshatHub.pdf");
+      /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
+      /* First ask user for custom title */
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "Physical_Education_Sem-2_Practical_File");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "Physical_Education_Sem-2_Practical_File"; }
+      doc.save(`${customTitle}.pdf`);
       stepMsg.textContent = "✅ Completed successfully!";
       setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
     }

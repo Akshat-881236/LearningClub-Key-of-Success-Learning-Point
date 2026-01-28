@@ -1,0 +1,1116 @@
+<!--
+============================================================
+  Akshat Network Hub - Universal PDF Viewer (Print-Protected Final)
+  Author   : Akshat Prasad
+  Identity : Akshat Network | Open Web Initiative
+  Purpose  : Dual-Watermark PDF Viewer + Strict Print Restriction
+  License  : MIT
+============================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quizzone Project Homepage Source Code | Secure PDF Viewer</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f4f6fa;
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    header {
+      background: #0b4f6c;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    #pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px;
+      transition: background 0.3s ease;
+    }
+    canvas {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      background: #fff;
+      max-width: 95%;
+      height: auto;
+    }
+
+    /* Floating Toolbar */
+    .toolbar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: row;
+      background: #0b4f6c;
+      border-radius: 40px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      z-index: 1000;
+    }
+    .toolbar button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      margin: 0 6px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .toolbar button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Status Overlay */
+    #status-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 2000;
+    }
+    .status-box {
+      background: #fff;
+      color: #222;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 280px;
+    }
+    .status-step {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .status-bar {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 6px;
+      width: 0;
+      background: #0b4f6c;
+      transition: width 0.4s ease;
+    }
+    .status-message {
+      font-size: 14px;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .toolbar { flex-wrap: wrap; bottom: 10px; right: 10px; }
+      .toolbar button { font-size: 16px; margin: 4px; }
+    }
+
+    @media print {
+      body::before {
+        content: "⚠ Printing of this document is restricted. Redirecting to policy page...";
+        display: block;
+        text-align: center;
+        color: #c00;
+        font-size: 20px;
+        margin-top: 40vh;
+      }
+      body *:not(::before) { display: none !important; }
+    }
+
+    /* Themes */
+    body.light { background: #f4f6fa; color: #222; }
+    body.dark { background: #111; color: #eee; }
+    body.dragon { background: #250000; color: #ffcc00; }
+    body.forest { background: #013220; color: #d0ffd0; }
+    body.ocean { background: #001f3f; color: #aee7ff; }
+    body.midnight { background: #0a0a23; color: #c2d3ff; }
+  </style>
+</head>
+<body class="light">
+
+  <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
+
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Quizzone%20Homepage%20-%20Akshat%20Network%20Hub%20Source%20Code.pdf"></div>
+
+  <!-- Floating Toolbar -->
+  <div class="toolbar">
+    <button id="prevPage">⬅️</button>
+    <button id="nextPage">➡️</button>
+    <button id="zoomOut">➖</button>
+    <button id="zoomIn">➕</button>
+    <button id="modeToggle">📖</button>
+    <button id="themeToggle">🎨</button>
+    <button id="download-btn">💾</button>
+  </div>
+
+  <!-- Overlay for Processing -->
+  <div id="status-overlay">
+    <div class="status-box">
+      <div class="status-step">Processing...</div>
+      <div class="status-bar"><div class="progress"></div></div>
+      <div class="status-message">Initializing...</div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const pdfContainer = document.getElementById("pdf-viewer");
+    const pdfUrl = pdfContainer.getAttribute("href");
+    const logoUrl = "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/Icon.png";
+    const { jsPDF } = window.jspdf;
+    const pdfjsLib = window["pdfjs-dist/build/pdf"];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+    let pdfDoc = null, renderedPages = [], currentPage = 1, scale = 1.2, viewMode = "scroll";
+    const logoImage = new Image(); logoImage.src = logoUrl;
+    const themes = ["light","dark","dragon","forest","ocean","midnight"];
+    let currentThemeIndex = 0;
+
+    logoImage.onload = async () => renderPDF();
+
+    async function renderPDF() {
+      pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+      renderAllPages();
+    }
+
+    async function renderAllPages() {
+      pdfContainer.innerHTML = "";
+      renderedPages = [];
+      const total = pdfDoc.numPages;
+
+      for (let i = 1; i <= total; i++) {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        applyWatermarks(canvas, logoImage);
+        canvas.dataset.page = i;
+        pdfContainer.appendChild(canvas);
+        renderedPages.push(canvas);
+      }
+      updateBookView();
+    }
+
+    function applyWatermarks(canvas, logo) {
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.font = "bold 36px Inter";
+      ctx.fillStyle = "#0b4f6c";
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(-Math.PI / 4);
+      const text = "© Akshat Network Hub";
+      const spacing = 200;
+      ctx.fillText(text, -250, -spacing);
+      ctx.fillText(text, -250, 0);
+      ctx.fillText(text, -250, spacing);
+      ctx.restore();
+
+      const logoSize = 80;
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(logo, canvas.width - logoSize - 20, canvas.height - logoSize - 20, logoSize, logoSize);
+      ctx.globalAlpha = 1;
+    }
+
+    function updateBookView() {
+      renderedPages.forEach(c => c.style.display = (viewMode === "book" ? "none" : "block"));
+      if (viewMode === "book") renderedPages[currentPage - 1].style.display = "block";
+    }
+
+    document.getElementById("prevPage").onclick = () => {
+      if (viewMode === "book" && currentPage > 1) {
+        currentPage--; updateBookView();
+      }
+    };
+    document.getElementById("nextPage").onclick = () => {
+      if (viewMode === "book" && currentPage < renderedPages.length) {
+        currentPage++; updateBookView();
+      }
+    };
+    document.getElementById("zoomIn").onclick = () => { scale += 0.2; renderAllPages(); };
+    document.getElementById("zoomOut").onclick = () => { if (scale > 0.6) scale -= 0.2; renderAllPages(); };
+    document.getElementById("modeToggle").onclick = () => {
+      viewMode = (viewMode === "scroll") ? "book" : "scroll"; updateBookView();
+    };
+    document.getElementById("themeToggle").onclick = () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      document.body.className = themes[currentThemeIndex];
+    };
+
+    // Swipe gestures
+    let startX = 0;
+    pdfContainer.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    pdfContainer.addEventListener("touchend", e => {
+      let diff = e.changedTouches[0].clientX - startX;
+      if (viewMode === "book") {
+        if (diff < -50 && currentPage < renderedPages.length) currentPage++;
+        if (diff > 50 && currentPage > 1) currentPage--;
+        updateBookView();
+      }
+    });
+
+    // Download with progress
+    const statusOverlay = document.getElementById("status-overlay");
+    const progress = document.querySelector(".progress");
+    const stepTitle = document.querySelector(".status-step");
+    const stepMsg = document.querySelector(".status-message");
+    const steps = [
+      { msg: "Preparing PDF...", color: "#0b4f6c" },
+      { msg: "Rendering pages...", color: "#1597e5" },
+      { msg: "Applying watermark...", color: "#f4a261" },
+      { msg: "Building final file...", color: "#2a9d8f" },
+      { msg: "Finalizing & downloading...", color: "#264653" }
+    ];
+
+    async function downloadPDFWithWatermark() {
+      statusOverlay.style.display = "flex";
+      const totalSteps = steps.length;
+      const doc = new jsPDF();
+      for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        progress.style.background = s.color;
+        progress.style.width = `${((i + 1) / totalSteps) * 100}%`;
+        stepTitle.textContent = `Step ${i + 1} of ${totalSteps}`;
+        stepMsg.textContent = `${s.msg} (${Math.round(((i + 1) / totalSteps) * 100)}%)`;
+        await new Promise(r => setTimeout(r, 700));
+      }
+      for (let i = 0; i < renderedPages.length; i++) {
+        const img = renderedPages[i].toDataURL("image/png");
+        doc.addImage(img, "PNG", 0, 0, 210, 297);
+        if (i < renderedPages.length - 1) doc.addPage();
+      }
+      /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
+      /* First ask user for custom title */
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "Quizzone_Homepage_Source_Code");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "Quizzone_Homepage_Source_Code"; }
+      doc.save(`${customTitle}.pdf`);
+      stepMsg.textContent = "✅ Completed successfully!";
+      setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
+    }
+    document.getElementById("download-btn").onclick = downloadPDFWithWatermark;
+
+    // Print restriction
+    const redirectToPolicy = () => {
+      const currentPage = encodeURIComponent(window.location.pathname);
+      window.location.href = `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${currentPage}`;
+    };
+    window.addEventListener("beforeprint", e => { e.preventDefault(); window.stop(); redirectToPolicy(); });
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") { e.preventDefault(); redirectToPolicy(); }
+    });
+    window.addEventListener("contextmenu", e => {
+      if (e.target.tagName.toLowerCase().includes("canvas")) {
+        e.preventDefault(); alert("Printing of this document is restricted by policy.");
+      }
+    });
+    window.matchMedia("print").addEventListener("change", mql => {
+      if (mql.matches) redirectToPolicy();
+    });
+  </script>
+  <script>
+/* ============================================================
+   UPGRADE 1: FAB-LIKE TOOLBAR (EXPAND / COLLAPSE)
+   ============================================================ */
+
+(function () {
+  const toolbar = document.querySelector(".toolbar");
+  if (!toolbar) return;
+
+  toolbar.style.transition = "all 0.35s ease";
+  toolbar.style.overflow = "hidden";
+  toolbar.style.width = "48px";
+  toolbar.style.padding = "6px";
+
+  let expanded = false;
+
+  const expandToolbar = () => {
+    if (expanded) return;
+    toolbar.style.width = "auto";
+    toolbar.style.padding = "6px 12px";
+    toolbar.classList.add("expanded");
+    expanded = true;
+  };
+
+  const collapseToolbar = () => {
+    if (!expanded) return;
+    toolbar.style.width = "48px";
+    toolbar.style.padding = "6px";
+    toolbar.classList.remove("expanded");
+    expanded = false;
+  };
+
+  toolbar.addEventListener("mouseenter", expandToolbar);
+  toolbar.addEventListener("mouseleave", collapseToolbar);
+
+  // Mobile touch support
+  toolbar.addEventListener("click", () => {
+    expanded ? collapseToolbar() : expandToolbar();
+  });
+})();
+
+/* ============================================================
+   UPGRADE 2: SECURITY & REDIRECTION HARDENING
+   ============================================================ */
+
+(function () {
+  const redirectViolation = (reason) => {
+    console.warn("Security Policy Triggered:", reason);
+    const from = encodeURIComponent(window.location.pathname);
+    window.location.href =
+      `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${from}&reason=${encodeURIComponent(reason)}`;
+  };
+
+  /* --------- 1. BLOCK SCREENSHOT KEYS --------- */
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+
+    // Print Screen
+    if (key === "printscreen") {
+      e.preventDefault();
+      redirectViolation("Screenshot attempt detected");
+    }
+
+    // Windows Snipping Tool / macOS screenshot combos
+    if (
+      (e.metaKey && e.shiftKey && ["3", "4", "5"].includes(key)) ||
+      (e.ctrlKey && e.shiftKey && key === "s")
+    ) {
+      e.preventDefault();
+      redirectViolation("Screen capture shortcut blocked");
+    }
+  });
+
+  /* --------- 2. VISIBILITY / TAB SWITCH DETECTION --------- */
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      redirectViolation("Tab switch or background activity detected");
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    redirectViolation("Window focus lost");
+  });
+
+  /* --------- 3. BLOCK NEW TAB / WINDOW OPENING --------- */
+  const originalOpen = window.open;
+  window.open = function () {
+    alert("Opening new tabs or windows is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
+    redirectViolation("New tab or window blocked");
+    return null;
+  };
+
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (a && a.target === "_blank") {
+      e.preventDefault();
+      alert("External navigation is restricted.");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
+      redirectViolation("External navigation blocked");
+    }
+  });
+
+  /* --------- 4. IFRAME EMBED BLOCK (FRAME BUSTING) --------- */
+  if (window.top !== window.self) {
+    redirectViolation("Iframe embedding blocked");
+    alert("This content cannot be displayed in an embedded frame.");
+    alert("Redirecting to secure viewer...");
+    window.top.location = window.self.location;
+  }
+
+  /* --------- 5. DEVTOOLS / INSPECT DETERRENCE --------- */
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(e.key.toLowerCase())) ||
+      (e.ctrlKey && e.key.toLowerCase() === "u")
+    ) {
+      e.preventDefault();
+      alert("Developer tools access is restricted.");
+      /* Redirecting User to /LearningClub-Key-of-Success-Learning-Point/Error/permission.htm */
+      alert("Redirecting to permission error page...");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+      redirectViolation("Developer tools blocked");
+    }
+  });
+
+  /* --------- 6. DISABLE TEXT SELECTION & COPY --------- */
+  document.addEventListener("selectstart", e => e.preventDefault());
+  document.addEventListener("copy", e => {
+    e.preventDefault();
+    alert("Copying content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Copy action blocked");
+  });
+  document.addEventListener("cut", e => {
+    e.preventDefault();
+    alert("Cutting content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Cut action blocked");
+  });
+
+  /* --------- 7. CONTEXT MENU HARD BLOCK --------- */
+  document.addEventListener("contextmenu", e => {
+    e.preventDefault();
+    alert("Context menu access is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Context menu blocked");
+  });
+
+})();
+
+/* ============================================================
+   Akshat Network Hub
+   Rich Dynamic PDF Sections + Edge-style Sidebar
+   ============================================================ */
+
+(function () {
+
+  /* ------------------------------------------------------------
+     1. Inner CSS (Edge-like polish)
+     ------------------------------------------------------------ */
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .page-content-section{
+      max-width:920px;
+      margin:32px auto;
+      padding:26px 30px;
+      background:linear-gradient(180deg,#ffffff,#f6f9fc);
+      border-radius:14px;
+      border:1px solid #e3e8ef;
+      box-shadow:0 10px 28px rgba(0,0,0,0.08);
+      font-family:Inter,system-ui,sans-serif;
+    }
+
+    .page-content-section h3{
+      font-size:1.15rem;
+      font-weight:700;
+      color:#0b4f6c;
+      margin:0 0 6px;
+    }
+
+    .page-content-section .meta{
+      font-size:.8rem;
+      color:#666;
+      margin-bottom:14px;
+    }
+
+    .page-content-section p{
+      font-size:.95rem;
+      line-height:1.75;
+      color:#222;
+      margin:0 0 10px;
+    }
+
+    .chip{
+      display:inline-block;
+      background:#e8f2f8;
+      color:#0b4f6c;
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:.75rem;
+      font-weight:600;
+      margin-right:6px;
+    }
+
+    /* Sidebar (Edge-style) */
+    #pdf-dynamic-sidebar{
+      position:fixed;
+      top:50%;
+      left:-280px;
+      transform:translateY(-50%);
+      width:280px;
+      height:78vh;
+      background:#0e3a52;
+      color:#fff;
+      padding:16px 14px;
+      border-radius:0 18px 18px 0;
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      transition:left .35s ease;
+      z-index:1600;
+      overflow-y:auto;
+    }
+    #pdf-dynamic-sidebar.open{ left:0; }
+
+    #pdf-dynamic-sidebar h4{
+      margin:0 0 14px;
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+
+    .nav-group{
+      margin-bottom:16px;
+    }
+
+    .nav-group-title{
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      opacity:.7;
+      margin-bottom:6px;
+    }
+
+    #pdf-dynamic-sidebar ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+
+    #pdf-dynamic-sidebar li{
+      padding:9px 10px;
+      margin-bottom:6px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:.9rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:background .25s;
+    }
+
+    #pdf-dynamic-sidebar li:hover{
+      background:rgba(255,255,255,.14);
+    }
+
+    #pdf-dynamic-sidebar li.active{
+      background:rgba(255,255,255,.25);
+      font-weight:600;
+    }
+
+    .badge{
+      background:rgba(255,255,255,.25);
+      padding:2px 8px;
+      border-radius:10px;
+      font-size:.7rem;
+    }
+
+    #pdf-sidebar-handle{
+      position:fixed;
+      top:50%;
+      left:0;
+      transform:translateY(-50%);
+      background:#0e3a52;
+      color:#fff;
+      padding:12px 8px;
+      border-radius:0 8px 8px 0;
+      cursor:pointer;
+      z-index:1700;
+      font-size:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,.4);
+    }
+  `;
+  document.head.appendChild(style);
+
+  /* ------------------------------------------------------------
+     2. Rich Content Map (2-page PDF)
+     ------------------------------------------------------------ */
+  const pageContentMap = {
+  1: {
+    content: `
+      <section class="page-content-section" id="section-page-1">
+        <h3>📘 Document Overview</h3>
+        <div class="meta">Quizzone • Akshat Network Hub</div>
+        <span class="chip">Homepage</span>
+        <span class="chip">Source Code</span>
+        <span class="chip">Open Web</span>
+        <span class="chip">Educational</span>
+        <span class="chip">Learning</span>
+        <span class="chip">Coding</span>
+        <span class="chip">Assessment</span>
+        <p>
+          This document outlines the source code and design principles behind Quizzone,
+          an open-source, frontend-only quiz platform developed by Akshat Network Hub. Its the first page description that describes the following lines of code.
+        </p>
+        <ol style="margin-top:12px; color:#333; font-size:.95rem;">
+            <li><span style="font-weight:600;">Meta Information:</span> Title, author, and keywords for SEO and identification are present in the head section of the Html document. </li>
+            <ul style="margin-top:8px; margin-bottom:12px; color:#555; font-size:.9rem;">
+                <li>Title: "Quizzone - Learn, Practice & Master Knowledge"</li>
+                <li>Author: "Akshat Prasad"</li>
+                <li>Keywords: "Quizzone, Quiz Platform, MCQ, GK, Mathematics, Science, Coding, AI Quiz, ML Quiz, Competitive Exams, Aptitude, Learning, etc that help Search Engine to find the document easily."</li>
+                <li>Description: "Quizzone is a modern quiz platform featuring MCQ quizzes across domains: General Knowledge, Mathematics, Aptitude, and more."</li>
+            </ul>
+            <li>Explore more meta tags and SEO optimizations in the head section of the Html document.</li>
+            <li><span style="font-weight:600;">Styling & Layout:</span> The document highlights the use of CSS for styling, including responsive design techniques to ensure usability across devices. The visibility of styles in head section explain that the coder prefer internal CSS styling. But for better maintainability, external stylesheets are recommended.</li>
+            </ol>
+            <p>
+                You can explore the complete source code of Quizzone of Page No. 1 in detail from the copyright pdf document provided by Learning Club - Key of Success Learning Point. Additionally you can explore the source code of Quizzone - Homepage uploaded on GitHub Repo name: Quizzone at <a href="https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html" rel="noopener">https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html</a> .
+            </p>
+          </section>
+        `
+  },
+
+  2: {
+    content: `
+      <section class="page-content-section" id="section-page-2">
+        <h3>📜 Media CSS Importance</h3>
+        <div class="meta">Media Queries • Responsive Design</div>
+        <span class="chip">CSS</span>
+        <span class="chip">Responsive</span>
+        <span class="chip">Media Queries</span>
+        <span class="chip">Quizzone Design</span>
+        <span class="chip">Quizzone Moblie Layout </span>
+        <p>
+          Page No. 2 of the Source Code document emphasizes the use of media queries
+          in CSS to create a responsive design for Quizzone. This ensures that the Quizzone platform
+          is accessible and user-friendly across various devices, including desktops, tablets, and smartphones. Additionally, Search Engine ranks the document higher for mobile usability.
+        </p>
+        <p>
+          You can explore the complete source code of Quizzone of Page No. 2 in detail from the copyright pdf document provided by Learning Club - Key of Success Learning Point. Additionally you can explore the source code of Quizzone - Homepage uploaded on GitHub Repo name: Quizzone at <a href="https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html" rel="noopener">https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html</a> .
+        </p>
+        <p>
+          Overall, this section highlights the importance of responsive web design and how media queries play a crucial role in achieving it for modern web applications like Quizzone.
+        </p>
+      </section>
+    `
+  },
+
+  4: {
+    content: `
+      <section class="page-content-section" id="section-page-4">
+        <h3>🧠 External Script ( But Belongs to ANH )</h3>
+        <div class="meta">Akshat Network Hub Global Scripts</div>
+        <span class="chip">Quizzone</span>
+        <span class="chip">Global ANH Scripts</span>
+        <span class="chip">JavaScript</span>
+        <p>
+          We directly move to Page No. 4 of the Source Code document which highlights the inclusion of an external JavaScript file
+          from Akshat Network Hub's global assets. This script likely contains shared functionality or utilities used across multiple projects within the Akshat Network ecosystem, including Quizzone, Sitemap Generator, and Learning Club too. Page No. 3 is skipped because it follow by Page No. 2 Media Quries for Responsive Design that covers Page No. 3 content also.
+        </p>
+        <p>
+            You can explore the complete source code of Quizzone of Page No. 4 in detail from the copyright pdf document provided by Learning Club - Key of Success Learning Point. Additionally you can explore the source code of Quizzone - Homepage uploaded on GitHub Repo name: Quizzone at <a href="https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html" rel="noopener">https://github.com/Akshat-881236/Quizzone/blob/main/Home/index.html</a> .
+        </p>
+        <p>
+            Now , we are going to discuss one by one each external ANH Global Script that is used in Quizzone - Homepage Source Code or other projects of Akshat Network Hub.
+        </p>
+        <dl style="margin-top:12px; color:#333; font-size:.95rem;">
+            <dt style="font-weight:600; margin-top:10px;">1.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/MITLicense-Term-of-Use--Privacy.min.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/MITLicense-Term-of-Use--Privacy.min.js</a></code></dt>
+            <dd style="margin-left:16px; color:#555; font-size:.9rem;">
+                This script dynamically injects a unified Terms of Use, Privacy Policy, and User Manual banner across all Akshat Network Hub pages. It automatically detects the project context, applies consistent styling, and displays policy links after a configurable delay. The banner supports optional enforcement, dismissal memory via localStorage, accessibility attributes, and version-based acknowledgment tracking, ensuring transparent policy communication without backend dependencies.
+            </dd>
+            <dt style="font-weight:600; margin-top:10px;">2.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/sitemapjs/blob/main/breadcrumb.js" rel="noopener">https://github.com/Akshat-881236/sitemapjs/blob/main/breadcrumb.js</a></code></dt> 
+            <dd style="margin-left:16px; color:#555; font-size:.9rem;">
+                This script implements a smart, non-intrusive navigation and notification system for the Akshat Network ecosystem. It dynamically shows contextual visit suggestions, informational notices, or alert messages based on the current page, linked projects, and network membership. Notifications are displayed at timed intervals, respect user preferences, and stop automatically after repeated dismissals. A lightweight localStorage database stores quotes and messages without affecting other data. The script also injects a scroll-activated breadcrumb for navigation awareness and includes a settings panel that allows users to temporarily disable notifications. Color-coded cards, accessibility considerations, and safe fallbacks ensure a polished, user-friendly experience across both internal and external pages.
+            </dd>
+            <dt style="font-weight:600; margin-top:10px;">3.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/redirect.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/redirect.js</a></code></dt>
+            <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.7;">
+This script represents a highly advanced, security-focused redirection and navigation governance engine designed for the Akshat Project Network. It goes far beyond simple link interception by acting as a centralized, privacy-first decision layer that evaluates, controls, and documents every navigation attempt occurring within or from a page. The architecture is intentionally split into a stable reference implementation and an extended protection layer, ensuring backward compatibility while enabling enterprise-grade safeguards.
+
+<ol style="margin-left:18px; margin-top:10px;">
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Core Redirection Framework</b>
+    <ul style="margin-left:18px;">
+      <li>
+        The base layer intercepts all anchor clicks and programmatic redirects to determine whether navigation occurs within the Akshat Network, to a trusted external destination, or to an unknown external source.
+      </li>
+      <li>
+        Internal redirects are visually explained using a branded overlay that shows both the source and destination projects, reinforcing transparency and user trust.
+      </li>
+      <li>
+        External redirects trigger a confirmation dialog, clearly labeling whether the destination is trusted or unverified, reducing the risk of phishing or accidental navigation.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Trust Classification & Scoring Engine</b>
+    <ul style="margin-left:18px;">
+      <li>
+        Each destination URL is normalized and analyzed through a trust-scoring algorithm that assigns a score between 0 and 100.
+      </li>
+      <li>
+        Factors include protocol safety, hostname reputation, punycode detection, IP-based hosts, URL length, suspicious keywords, and alignment with known trusted domains.
+      </li>
+      <li>
+        Based on the score, destinations are classified into levels such as auto-allow, soft confirmation, hard confirmation, or block, enabling nuanced decision-making instead of binary allow/deny logic.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Universal Interception Coverage</b>
+    <ul style="margin-left:18px;">
+      <li>
+        The engine intercepts virtually all navigation vectors including anchor clicks, buttons with data-href, form submissions, location.assign/replace calls, history API changes, window.open calls, meta-refresh tags, and timed redirects.
+      </li>
+      <li>
+        This ensures that no silent or programmatic redirect can bypass the security layer, even if triggered indirectly by scripts or delayed timers.
+      </li>
+      <li>
+        Middle-clicks, modifier-key navigation, and reduced-motion preferences are respected to preserve standard browser usability.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">User-Centric Overlay Interface</b>
+    <ul style="margin-left:18px;">
+      <li>
+        A full-screen, accessibility-aware overlay explains the navigation decision using clear branding, readable typography, keyboard support, and ARIA roles.
+      </li>
+      <li>
+        Users can view source and destination URLs, trust scores, decision reasons, and countdown timers before any automatic action occurs.
+      </li>
+      <li>
+        Options such as “Continue,” “Cancel,” “Open in New Tab,” and trust preference buttons empower users to remain in control.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Preference Memory & Session Control</b>
+    <ul style="margin-left:18px;">
+      <li>
+        Trust decisions can be saved persistently using localStorage, allowing users to always trust, never trust, or always ask for specific hosts.
+      </li>
+      <li>
+        Session-based bypass options allow temporary trust without long-term persistence, ideal for short-term research or testing.
+      </li>
+      <li>
+        All stored preferences are isolated, structured, and safely parsed to avoid corruption or cross-script interference.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Loop Detection & Abuse Prevention</b>
+    <ul style="margin-left:18px;">
+      <li>
+        The engine tracks recent redirects in session storage to detect rapid or repetitive redirection patterns.
+      </li>
+      <li>
+        If loops or excessive redirect counts are detected, navigation is temporarily blocked and the user is warned with an explanatory overlay.
+      </li>
+      <li>
+        These safeguards protect users from redirect chains, infinite loops, and malicious bounce attacks.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:10px;">
+    <b style="color:#333;">Fail-Safe & Defensive Design</b>
+    <ul style="margin-left:18px;">
+      <li>
+        All critical operations are wrapped in defensive try-catch blocks to ensure that failures do not break navigation.
+      </li>
+      <li>
+        In case of unexpected errors, the system defaults to allowing navigation rather than blocking users, preserving usability.
+      </li>
+      <li>
+        Minimal APIs are exposed for debugging and transparency without leaking internal logic or sensitive state.
+      </li>
+    </ul>
+  </li>
+</ol>
+
+Overall, this script functions as a browser-level navigation firewall tailored for a multi-project ecosystem. It balances security, transparency, performance, and user autonomy, making it suitable not only for personal portfolios but also for large educational or documentation networks where trust, clarity, and safe navigation are critical.
+</dd>
+        <dt style="font-weight:600; margin-top:10px;">2.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/akshatnetworkhub.min.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/akshatnetworkhub.min.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.6;">
+            This script provides a lightweight visual indicator that informs users whether the currently loaded webpage belongs to the official Akshat Project Network. On page load, it checks the URL prefix against a predefined trusted domain and displays a temporary banner at the top of the screen. Green banners indicate verified, secure network pages, while red banners warn users when they are on an external or unverified domain. Messages are randomly selected to avoid repetition, and the banner automatically disappears after a set duration. The solution is fully client-side, fast, non-intrusive, and requires no backend or persistent storage.
+        </dd>
+        <dt style="font-weight:600; margin-top:10px;">3.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/tracker.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/tracker.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.6;">This script is a lightweight, client-side visit memory engine that records a user’s recent navigation history within the Akshat Network ecosystem. It securely stores visit details such as project name, page URL, page type, and timestamp using browser localStorage, without sending any data to servers. Duplicate entries are automatically removed, and the history is capped to a fixed number of recent visits to remain efficient. The script exposes a small public API for retrieving, clearing, or inspecting visit data, enabling features like “recently visited pages” while remaining privacy-safe, fast, and fully offline-compatible.
+        </dd>
+        <dt style="font-weight:600; margin-top:10px;">4.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/trackermeta.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/trackermeta.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.6;">This script acts as a static metadata and authority injector for pages within the Akshat Network ecosystem. It safely adds standardized author, creator, and publisher meta tags to establish clear ownership and authorship across all pages. Additionally, it injects semantic link relationships pointing to the central network hub, improving discoverability, indexing consistency, and identity linking. The script is designed to be idempotent, ensuring no duplicate tags are created, and runs reliably on both early and late DOM states. It enhances SEO clarity and network cohesion without tracking users or modifying page content.
+        </dd>
+        <dt style="font-weight:600; margin-top:10px;">5.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/ui.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/ui.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.6;">
+            This script provides the user-facing UI layer for TrackerJS, transforming stored visit history into helpful, non-intrusive reminders and revisit prompts. It dynamically displays contextual messages such as “welcome back,” “continue,” or “revisit” based on past activity, using a clean floating notification panel that auto-hides after a short duration. The UI is fully client-side, accessibility-aware, and safely escapes content to prevent injection issues. It also includes user controls to view recently visited pages, clear local visit history, or completely disable tracking on the device, reinforcing transparency, user control, and privacy-first design.
+        </dd>
+        <dt style="font-weight:600; margin-top:10px;">6.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/index.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/index.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.6;">
+            This script acts as the central decision-making orchestrator for TrackerJS, coordinating visit tracking data with user-facing reminders. On each page load, it records the current visit, analyzes recent navigation history, and calculates time gaps between visits. Based on this analysis, it intelligently decides whether to prompt users to resume the same project, continue a previously visited project, or revisit content after a long inactivity period. The logic is fully client-side, lightweight, and time-based, ensuring relevance without noise. It bridges TrackerJS data storage with the TrackerUI display layer, enabling contextual, privacy-safe engagement cues across the network.
+        </dd>
+        <dt style="font-weight:600; margin-top:10px;">7.<code style="background:#e8f2f8; color:#0b4f6c; padding:2px 6px; border-radius:4px; font-size:.85rem;"><a href="https://github.com/Akshat-881236/TrackerJS/blob/main/akshat-add-nav.js" rel="noopener">https://github.com/Akshat-881236/TrackerJS/blob/main/akshat-add-nav.js</a></code></dt>
+        <dd style="margin-left:16px; color:#555; font-size:.9rem; line-height:1.75;">
+This script implements a comprehensive, client-side identity, branding, and engagement management system for the Akshat Network ecosystem. It is designed to unify identity signaling, contextual navigation, user engagement, and brand protection across multiple projects while remaining fully frontend-only, privacy-conscious, and resilient. Rather than acting as a single-purpose widget, it behaves like a lightweight identity layer that continuously adapts to user behavior, page context, and stored preferences.
+
+<ol style="margin-left:18px; margin-top:12px;">
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Identity & Knowledge Database Layer</b>
+    <ul style="margin-left:18px;">
+      <li>
+        The script defines a structured keyword database that maps identity keywords (such as student ID, project codes, and platform names) to descriptive metadata and authoritative URLs.
+      </li>
+      <li>
+        This database acts as a semantic identity backbone, allowing consistent self-identification across portfolio sites, dashboards, learning platforms, and utility tools.
+      </li>
+      <li>
+        A separate breadcrumb database provides human-readable navigation anchors with contextual descriptions, reinforcing discoverability and clarity across interconnected projects.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Multi-Stage Notification & Visit Card Engine</b>
+    <ul style="margin-left:18px;">
+      <li>
+        A sequenced notification system displays visit cards for project homepages and important subpages after a configurable delay, mimicking a guided tour rather than intrusive popups.
+      </li>
+      <li>
+        Notifications are scheduled in order, reuse a single visit card UI, and update content dynamically as the sequence progresses.
+      </li>
+      <li>
+        If the user closes the card or opts to keep it closed, all future scheduled notifications are cancelled until settings expire, respecting user intent.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Persistent Settings with Time-to-Live (TTL)</b>
+    <ul style="margin-left:18px;">
+      <li>
+        User preferences such as notification visibility, breadcrumb display, SEO identity flags, and card closure state are stored in localStorage with a strict expiration window.
+      </li>
+      <li>
+        After the TTL expires, settings automatically reset to defaults, preventing long-term silent suppression of identity or navigation cues.
+      </li>
+      <li>
+        The expiry mechanism is precisely scheduled to enforce resets even during long browsing sessions.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Dynamic UI Injection & Styling</b>
+    <ul style="margin-left:18px;">
+      <li>
+        All UI components—including visit cards, settings panels, breadcrumbs, tooltips, and brand banners—are injected dynamically using JavaScript and scoped CSS.
+      </li>
+      <li>
+        Styles are injected only once, avoiding duplication and minimizing layout conflicts with host pages.
+      </li>
+      <li>
+        The design emphasizes readability, contrast, and minimal footprint, ensuring compatibility with both simple static pages and complex applications.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Interactive Breadcrumbs with Contextual Tooltips</b>
+    <ul style="margin-left:18px;">
+      <li>
+        Breadcrumbs are rendered programmatically into a designated container, allowing centralized control over navigation structure.
+      </li>
+      <li>
+        Hover-based tooltips reveal additional contextual information for each breadcrumb item, improving understanding without cluttering the interface.
+      </li>
+      <li>
+        Breadcrumb visibility can be toggled via user settings and updates instantly without page reload.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Brand Enforcement Outside the Network</b>
+    <ul style="margin-left:18px;">
+      <li>
+        When the script is executed outside the official Akshat Network domain, an unmissable brand card is enforced at the bottom of the page.
+      </li>
+      <li>
+        A MutationObserver ensures the brand card cannot be silently removed, preserving attribution and source visibility.
+      </li>
+      <li>
+        Inside the official network, the brand card is automatically suppressed to avoid redundancy.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Settings Panel & User Autonomy</b>
+    <ul style="margin-left:18px;">
+      <li>
+        A built-in settings interface allows users to fine-tune notifications, breadcrumbs, SEO flags, and notification timing gaps.
+      </li>
+      <li>
+        Changes apply immediately and are summarized visually, reinforcing transparency and trust.
+      </li>
+      <li>
+        A one-click reset restores defaults, ensuring users are never locked into an unwanted configuration.
+      </li>
+    </ul>
+  </li>
+
+  <li style="margin-bottom:14px;">
+    <b style="color:#333;">Initialization & Public API Exposure</b>
+    <ul style="margin-left:18px;">
+      <li>
+        The system initializes safely after DOM readiness, applying persisted settings and scheduling notifications only when appropriate.
+      </li>
+      <li>
+        A minimal public API is exposed under <code>window.AkshatIdentity</code> for debugging, testing, and controlled programmatic use.
+      </li>
+      <li>
+        Defensive coding patterns ensure graceful failure without blocking page functionality.
+      </li>
+    </ul>
+  </li>
+</ol>
+
+In summary, this script functions as an identity-aware engagement layer rather than a simple UI component. It blends branding, navigation intelligence, user preference management, and ethical persistence into a cohesive system suitable for large, interconnected educational or portfolio-based ecosystems.
+</dd>
+        </dl>
+        <p>
+            You can explore the complete source code of Quizzone of Page No. 4 in detail from the copyright pdf document provided by Learning Club - Key of Success Learning Point. Additionally you can explore the source code of Quizzone - Homepage uploaded on GitHub Repo name: Quizzone at <a href="https://github.com/Akshat-881236/Quizzone/blob/main/index.html" rel="noopener">https://github.com/Akshat-881236/Quizzone/blob/main/index.html</a> .
+        </p>
+      </section>
+    `
+  }
+};
+
+/* ------------------------------------------------------------
+     3. Inject Content Around PDF Pages
+     ------------------------------------------------------------ */
+  /* ------------------------------------------------------------
+   Reliable Content Injection (Refresh-Safe)
+   ------------------------------------------------------------ */
+let lastCanvasCount = 0;
+let stableTicks = 0;
+
+const wait = setInterval(() => {
+  const canvases = [...document.querySelectorAll("canvas[data-page]")];
+
+  if (!canvases.length) return;
+
+  // Check if canvas count stopped increasing
+  if (canvases.length === lastCanvasCount) {
+    stableTicks++;
+  } else {
+    stableTicks = 0;
+    lastCanvasCount = canvases.length;
+  }
+
+  // Require stability for ~600ms
+  if (stableTicks < 2) return;
+
+  clearInterval(wait);
+
+  const totalPages = canvases.length;
+
+  Object.keys(pageContentMap)
+    .map(n => parseInt(n, 10))
+    .filter(n => !isNaN(n) && n <= totalPages)
+    .sort((a, b) => a - b)
+    .forEach(pageNum => {
+      const html = pageContentMap[pageNum]?.content;
+      if (!html) return;
+
+      const block = document.createElement("div");
+      block.innerHTML = html;
+
+      if (pageNum === 1) {
+        canvases[0].before(block);
+      } else {
+        const prev = canvases.find(
+          c => Number(c.dataset.page) === pageNum - 1
+        );
+        prev?.after(block);
+      }
+    });
+
+  buildSidebar(totalPages);
+}, 300);
+
+
+
+  /* ------------------------------------------------------------
+     4. Edge-style Sidebar Navigation
+     ------------------------------------------------------------ */
+  function buildSidebar(totalPages) {
+    const sidebar = document.createElement("div");
+    sidebar.id = "pdf-dynamic-sidebar";
+    sidebar.innerHTML = `
+      <h4>📑 Document Map</h4>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Pages</div>
+        <ul id="page-nav"></ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Sections</div>
+        <ul id="section-nav"></ul>
+      </div>
+    `;
+    document.body.appendChild(sidebar);
+
+    const handle = document.createElement("div");
+    handle.id = "pdf-sidebar-handle";
+    handle.textContent = "☰";
+    document.body.appendChild(handle);
+
+    handle.onclick = () => sidebar.classList.toggle("open");
+
+    const pageUL = sidebar.querySelector("#page-nav");
+    const secUL = sidebar.querySelector("#section-nav");
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement("li");
+      li.innerHTML = `Page ${i} <span class="badge">PDF</span>`;
+      li.onclick = () => {
+        document.querySelector(`canvas[data-page="${i}"]`)
+          ?.scrollIntoView({ behavior:"smooth" });
+        highlight(li, pageUL);
+      };
+      pageUL.appendChild(li);
+
+      if (pageContentMap[i]) {
+        const sli = document.createElement("li");
+        sli.innerHTML = `Section ${i} <span class="badge">HTML</span>`;
+        sli.onclick = () => {
+          document.getElementById(`section-page-${i}`)
+            ?.scrollIntoView({ behavior:"smooth" });
+          highlight(sli, secUL);
+        };
+        secUL.appendChild(sli);
+      }
+    }
+
+    function highlight(active, list){
+      list.querySelectorAll("li").forEach(l=>l.classList.remove("active"));
+      active.classList.add("active");
+    }
+
+    /* Touch swipe */
+    let sx=0;
+    document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+    document.addEventListener("touchend",e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      if(dx>90) sidebar.classList.add("open");
+      if(dx<-90) sidebar.classList.remove("open");
+    });
+  }
+
+})();
+
+</script>
+<script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+{
+  "name": "Learning Club – Akshat Network Hub",
+  "short_name": "Learning Club",
+  "description": "Offline-first learning ecosystem with PDFs, documentation, and tools by Akshat Network Hub.",
+  "start_url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/",
+  "scope": "/LearningClub-Key-of-Success-Learning-Point/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b4f6c",
+  "theme_color": "#0b4f6c",
+  "icons": [
+    {
+      "src": "/Assets/Icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/Icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Latest PDF",
+      "short_name": "Latest PDF",
+      "description": "Open the most recent Learning Club PDF",
+      "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneHomepageSourceCode.htm",
+      "icons": [
+        {
+          "src": "/Assets/Icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "PDF Library",
+      "short_name": "PDFs",
+      "description": "Browse all PDF documents",
+      "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/",
+      "icons": [
+        {
+          "src": "/Assets/Icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "App Settings",
+      "short_name": "Settings",
+      "description": "Open Learning Club App Settings",
+      "url": "/LearningClub-Key-of-Success-Learning-Point/index.htm?settings=open",
+      "icons": [
+        {
+          "src": "/Assets/Icons/icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "categories": [
+    "education",
+    "productivity",
+    "reference"
+  ],
+  "lang": "en-US",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

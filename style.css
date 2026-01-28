@@ -1,0 +1,279 @@
+:root {
+      --main: #0b4f6c;
+      --bg: #f4f7fb;
+      --card-bg: #fff;
+      --accent: #1597e5;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: "Inter", sans-serif;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--main);
+      color: #fff;
+      text-align: center;
+      padding: 35px 10px 45px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    header img {
+      height: 120px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    header h1 { font-size: 1.8rem; margin: 0; }
+    header p { font-size: 1rem; opacity: 0.85; margin: 5px 0 0; }
+
+    .intro {
+      text-align: center;
+      padding: 40px 20px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .intro h2 { color: var(--main); margin-bottom: 10px; }
+    .intro p { color: #555; line-height: 1.6; }
+
+    #searchBar {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 25px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #searchInput {
+      width: 80%;
+      max-width: 500px;
+      padding: 12px 14px;
+      border: 2px solid var(--main);
+      border-radius: 10px;
+      outline: none;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    #searchInput:focus { box-shadow: 0 0 6px var(--accent); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px 20px 60px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
+    .card img { width: 100%; height: 160px; object-fit: cover; background: #eee; opacity: 0; transition: opacity 0.5s ease; }
+
+    .card-content { padding: 18px; }
+    .card h3 { margin: 0; color: var(--main); font-size: 1.2rem; }
+    .card p { margin: 8px 0; font-size: 0.95rem; color: #555; }
+    .tags { margin-top: 8px; font-size: 0.85rem; color: var(--accent); }
+
+    #viewMoreBtn {
+      display: none;
+      margin: 20px auto 60px;
+      background: var(--main);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #viewMoreBtn:hover { background: #093f56; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--main);
+      color: #fff;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      #searchInput { width: 90%; font-size: 0.9rem; }
+    }
+
+    .anh-footer {
+    background: #0b4f6c;
+    color: #fff;
+    padding: 30px 20px 15px;
+    font-family: Inter, system-ui, sans-serif;
+  }
+
+  .anh-footer-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .footer-group {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .footer-toggle {
+    background: none;
+    border: none;
+    color: #ffcc00;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 8px 0 0;
+    margin: 0;
+    display: none;
+  }
+
+  .footer-links li {
+    margin: 6px 0;
+  }
+
+  .footer-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .footer-links a i {
+    margin-right: 6px;
+    color: #ffcc00;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+
+  .anh-footer-bottom {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.8rem;
+    opacity: 0.75;
+  }
+  /* ============================================================
+   Akshat Network Hub – Responsive Expandable Navigation
+   ============================================================ */
+
+.anh-nav {
+  position: relative;
+  background: #083d56;
+  padding: 6px 14px;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.nav-root {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-sub {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background: #ffffff;
+  color: #222;
+  min-width: 260px;
+  border-radius: 10px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.25);
+  padding: 8px 0;
+  display: none;
+  animation: slideDown .25s ease;
+  z-index: 999;
+}
+
+.nav-item:hover > .nav-sub {
+  display: block;
+}
+
+.nav-sub li {
+  list-style: none;
+}
+
+.nav-sub a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #222;
+  font-size: 0.95rem;
+}
+
+.nav-sub a:hover {
+  background: #f1f5f9;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .nav-toggle { display: block; }
+  .nav-root {
+    flex-direction: column;
+    display: none;
+  }
+  .anh-nav.open .nav-root {
+    display: flex;
+  }
+  .nav-sub {
+    position: static;
+    box-shadow: none;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

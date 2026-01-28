@@ -104,7 +104,7 @@
 }
 </script>
 
-<script type="application/ld+json" class="External-but-our-links">
+<script type="application/ld+json" class="External-but-our-links" title="Other Akshat Network Hub Links" role="navigation">
 {
  "@context":"https://schema.org",
  "@type":"BreadcrumbList",
@@ -132,295 +132,16 @@
  ]
 }
 </script>
-
-
-  <!-- Favicon -->
-  <link rel="icon" href="Assets/Icons/Icon.png" type="image/png">
-
-  <!-- Inline Styles -->
-  <style>
-    :root {
-      --main: #0b4f6c;
-      --bg: #f4f7fb;
-      --card-bg: #fff;
-      --accent: #1597e5;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      font-family: "Inter", sans-serif;
-      color: #222;
-      overflow-x: hidden;
-    }
-
-    header {
-      background: var(--main);
-      color: #fff;
-      text-align: center;
-      padding: 35px 10px 45px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    header img {
-      height: 120px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    header h1 { font-size: 1.8rem; margin: 0; }
-    header p { font-size: 1rem; opacity: 0.85; margin: 5px 0 0; }
-
-    .intro {
-      text-align: center;
-      padding: 40px 20px 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .intro h2 { color: var(--main); margin-bottom: 10px; }
-    .intro p { color: #555; line-height: 1.6; }
-
-    #searchBar {
-      display: flex;
-      justify-content: center;
-      margin: 10px 0 25px;
-      position: sticky;
-      top: 0;
-      background: var(--bg);
-      z-index: 10;
-      padding: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    #searchInput {
-      width: 80%;
-      max-width: 500px;
-      padding: 12px 14px;
-      border: 2px solid var(--main);
-      border-radius: 10px;
-      outline: none;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
-    #searchInput:focus { box-shadow: 0 0 6px var(--accent); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 20px 20px 60px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
-    .card img { width: 100%; height: 160px; object-fit: cover; background: #eee; opacity: 0; transition: opacity 0.5s ease; }
-
-    .card-content { padding: 18px; }
-    .card h3 { margin: 0; color: var(--main); font-size: 1.2rem; }
-    .card p { margin: 8px 0; font-size: 0.95rem; color: #555; }
-    .tags { margin-top: 8px; font-size: 0.85rem; color: var(--accent); }
-
-    #viewMoreBtn {
-      display: none;
-      margin: 20px auto 60px;
-      background: var(--main);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    #viewMoreBtn:hover { background: #093f56; }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--main);
-      color: #fff;
-      font-size: 0.9rem;
-      letter-spacing: 0.3px;
-    }
-
-    @media (max-width: 600px) {
-      header h1 { font-size: 1.4rem; }
-      #searchInput { width: 90%; font-size: 0.9rem; }
-    }
-  </style>
-  <style>
-  .anh-footer {
-    background: #0b4f6c;
-    color: #fff;
-    padding: 30px 20px 15px;
-    font-family: Inter, system-ui, sans-serif;
-  }
-
-  .anh-footer-nav {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 28px;
-    max-width: 1100px;
-    margin: auto;
-  }
-
-  .footer-group {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 12px;
-  }
-
-  .footer-toggle {
-    background: none;
-    border: none;
-    color: #ffcc00;
-    font-size: 1rem;
-    font-weight: 600;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .footer-links {
-    list-style: none;
-    padding: 8px 0 0;
-    margin: 0;
-    display: none;
-  }
-
-  .footer-links li {
-    margin: 6px 0;
-  }
-
-  .footer-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .footer-links a i {
-    margin-right: 6px;
-    color: #ffcc00;
-  }
-
-  .footer-links a:hover {
-    text-decoration: underline;
-  }
-
-  .anh-footer-bottom {
-    text-align: center;
-    margin-top: 18px;
-    font-size: 0.8rem;
-    opacity: 0.75;
-  }
-  /* ============================================================
-   Akshat Network Hub – Responsive Expandable Navigation
-   ============================================================ */
-
-.anh-nav {
-  position: relative;
-  background: #083d56;
-  padding: 6px 14px;
-}
-
-.nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.nav-root {
-  list-style: none;
-  display: flex;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-item {
-  position: relative;
-}
-
-.nav-link {
-  background: none;
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-sub {
-  position: absolute;
-  top: 120%;
-  left: 0;
-  background: #ffffff;
-  color: #222;
-  min-width: 260px;
-  border-radius: 10px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.25);
-  padding: 8px 0;
-  display: none;
-  animation: slideDown .25s ease;
-  z-index: 999;
-}
-
-.nav-item:hover > .nav-sub {
-  display: block;
-}
-
-.nav-sub li {
-  list-style: none;
-}
-
-.nav-sub a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  text-decoration: none;
-  color: #222;
-  font-size: 0.95rem;
-}
-
-.nav-sub a:hover {
-  background: #f1f5f9;
-}
-
-/* Mobile */
-@media (max-width: 900px) {
-  .nav-toggle { display: block; }
-  .nav-root {
-    flex-direction: column;
-    display: none;
-  }
-  .anh-nav.open .nav-root {
-    display: flex;
-  }
-  .nav-sub {
-    position: static;
-    box-shadow: none;
-  }
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-</style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+   <!-- PWA: manifest & icons -->
+  <meta name="theme-color" content="#0b4f6c">
+  <link rel="manifest" href="/LearningClub-Key-of-Success-Learning-Point/manifest.json">
+  <!-- Service Worker  -->
+   <script src="/LearningClub-Key-of-Success-Learning-Point/service-worker.js" defer></script>
+  <link rel="icon" href="/Assets/Icons/icon-48.png" sizes="48x48">
+  <link rel="apple-touch-icon" href="/Assets/Icons/icon-192.png">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <!-- Global Akshat Network Scripts -->
   <script src="https://akshat-881236.github.io/TrackerJS/MITLicense-Term-of-Use--Privacy.min.js"></script>
   <script src="https://akshat-881236.github.io/sitemapjs/breadcrumb.js"></script>
@@ -437,7 +158,20 @@
     <img src="Assets/Logoes/icon-256.png" alt="Learning Club Logo">
     <h1>Learning Club – A Hub of Knowledge</h1>
     <p>Powered by Akshat Network Hub | Open Web Initiative</p>
-
+    <aside id="pwa-controls" aria-live="polite" style="position:fixed;right:12px;bottom:12px;background:#fff;border-radius:8px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.12);z-index:9999;font-family:system-ui;">
+  <h4 style="margin:0 0 8px 0;color:#0b4f6c;font-size:14px;">Offline App (Learning Club)</h4>
+  <div>
+    <button id="download-lite" title="Approx 40MB" style="margin-right:6px;background:#0b4f6c;color:#fff;padding:8px;border:0;border-radius:6px;cursor:pointer;">Download Lite (≈40MB)</button>
+    <button id="download-full" title="Approx 120MB" style="margin-right:6px;background:#0b4f6c;color:#fff;padding:8px;border:0;border-radius:6px;cursor:pointer;">Download Full (≈120MB)</button>
+    <button id="clear-cache" title="Remove downloaded offline package" style="background:#6c8591;color:#fff;padding:8px;border:0;border-radius:6px;cursor:pointer;">Clear</button>
+  </div>
+  <div style="margin-top:8px;">
+    <button id="install-btn" style="display:none;background:#1a73e8;color:#fff;padding:8px;border:0;border-radius:6px;cursor:pointer;">Install App</button>
+  </div>
+  <div id="pwa-progress" style="height:8px;background:#e6eef2;border-radius:6px;margin-top:8px;overflow:hidden;"><i style="display:block;height:100%;width:0%;background:linear-gradient(90deg,#0b4f6c,#0ea5a7);transition:width .3s;"></i></div>
+  <div class="status" id="pwa-status" style="margin-top:8px;font-size:12px;color:#333;">Idle</div>
+  <div id="storage-info" style="font-size:12px;color:#666;margin-top:6px;">Storage: calculating…</div>
+</aside>
     <nav class="anh-nav" id="anhMainNav" role="navigation" aria-label="Primary">
   <button class="nav-toggle" aria-label="Toggle navigation">
     <i class="bi bi-list"></i>
@@ -555,7 +289,7 @@
     </li>
 
     <li>
-      <a href="PdfLibrary/PdfHtmlView/privacy.htm">
+      <a href="PdfLibrary/PdfHtmlView/PrivacyComplianceReport.htm">
         <i class="bi bi-file-earmark-pdf-fill"></i>
         Privacy Compliance Report
       </a>
@@ -674,171 +408,107 @@
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/projects.js" defer></script>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/script.js" defer></script>
   <script>
-    const pdfjsLib = window["pdfjs-dist/build/pdf"];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
-
-    const projects = [
-      {
-        title: "Akshat Network Hub - Html Boilerplate Code",
-        desc: "Official format and snippet of Akshat Network HTML Code.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/HtmlBolierPlate(For All Akshat Project).pdf",
-        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/AkshatHtmlBoilerPlate.htm",
-        tags: ["html", "template", "akshat network", "boilerplate"],
-        date: "2026-01-18"
-      },
-      {
-        title: "Term of Use - Akshat Network Hub",
-        desc: "Briefing about terms and conditions for using Akshat Network Hub services.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Terms%20of%20Use%20_%20Akshat%20Network%20Hub.pdf",
-        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/ANHTermofUse.htm",
-        tags: ["terms", "conditions", "akshat network", "legal"],
-        date: "2026-01-19"
-      },
-      {
-        title: "Privacy Compliance Report",
-        desc: "Data and privacy transparency framework ensuring user protection within Akshat Network Hub.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Privacy%20Compliance%20Report%20–%20Akshat%20Network%20Hub%20Ecosystem.pdf",
-        link: "PdfLibrary/PdfHtmlView/privacy.htm",
-        tags: ["privacy", "data", "compliance", "security"],
-        date: "2026-01-20"
-      },
-      {
-        title: "Quizzone Project Outline",
-        desc: "Developer documentation for Quizzone Project & Folder Structure.",
-        pdf: "https://akshat-881236.github.io/Quizzone/Documentary/Quizzone_Owner_Message.pdf",
-        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneManual.htm",
-        tags: ["Quizzone", "Owner Message", "Quizzone Manual", "guide"],
-        date: "2026-01-20"
-      },
-      {
-        title: "Physiographic Divisions of India",
-        desc: "Detailed PDF on the Physiographic Divisions of India for educational purposes.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/PhysiographicDivisionOfIndia.pdf",
-        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/PhysiographicDivisionOfIndia.htm",
-        tags: ["physiographic", "india", "divisions", "education"],
-        date: "2026-01-21"
-      },
-      {
-        title: "Physical Education Sem - 2 Practical File",
-        desc: "Demo Practical File of Physical Education Semester 2 MIC NEP , 2020 Course.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Physical%20Education%20Practical%20File%20Demo.pdf",
-        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/PhysicalEducationSem-2PracticalFile.htm",
-        tags: ["physical education", "Age and Gender", "Vedic Period", "Somatotypes"],
-        date: "2026-01-21"
-      },
-      {
-        title: "Matriculation Certificate",
-        desc: "Digitally Sign By Digilocker 10th Marksheet of Akshat Prasad.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/10thDMC.pdf",
-        link: "PdfLibrary/PdfHtmlView/10thDMC.htm",
-        tags: ["10th DMC", "Board Exam", "Matriculation", "Secondary School Exam"],
-        date: "2026-01-22"
-      },
-      {
-        title: "Intermediate Certificate",
-        desc: "Digitally Sign By Digilocker 12th Marksheet of Akshat Prasad.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/12thDMC.pdf",
-        link: "PdfLibrary/PdfHtmlView/12thDMC.htm",
-        tags: ["12th DMC", "Board Exam", "Intermediate", "Senior Secondary School Exam"],
-        date: "2026-01-23"
-      },
-      {
-        title: "BCA Semester 1 Certificate",
-        desc: "Digitally Sign By Digilocker BCA SEM - 1 Marksheet of Akshat Prasad.",
-        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/BCASEM-1DMC.pdf",
-        link: "PdfLibrary/PdfHtmlView/BCASEM-1DMC.htm",
-        tags: ["BCA SEM - 1 DMC", "UG Exam", "Higher Education", "Undergraduate Exam"],
-        date: "2026-01-24"
-      }
-    ];
-
-    // Sort by date (newest first)
-    projects.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-    const grid = document.getElementById("projectGrid");
-    const searchInput = document.getElementById("searchInput");
-    const viewMoreBtn = document.getElementById("viewMoreBtn");
-    let visibleCount = 12;
-
-    async function renderProjects(filtered = projects) {
-      grid.innerHTML = "";
-      const visibleProjects = filtered.slice(0, visibleCount);
-      for (const p of visibleProjects) {
-        const card = document.createElement("div");
-        card.className = "card";
-        const imgID = `img-${p.title.replace(/\s+/g, "-")}`;
-        card.innerHTML = `
-          <img id="${imgID}" alt="${p.title}">
-          <div class="card-content">
-            <h3>${p.title}</h3>
-            <p>${p.desc}</p>
-            <div class="tags">#${p.tags.join(" #")}</div>
-            <p><a href="${p.link}" target="_blank">Open PDF →</a></p>
-          </div>`;
-        grid.appendChild(card);
-
-        const cacheKey = `thumb-${p.pdf}`;
-        const cached = localStorage.getItem(cacheKey);
-        const imgEl = document.getElementById(imgID);
-        if (cached) {
-          imgEl.src = cached;
-          imgEl.style.opacity = "1";
-        } else {
-          try {
-            const pdf = await pdfjsLib.getDocument(p.pdf).promise;
-            const page = await pdf.getPage(1);
-            const viewport = page.getViewport({ scale: 1.5 });
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            canvas.height = viewport.height / 2;
-            canvas.width = viewport.width;
-            await page.render({ canvasContext: ctx, viewport }).promise;
-            const halfCanvas = document.createElement("canvas");
-            halfCanvas.width = canvas.width;
-            halfCanvas.height = canvas.height / 2;
-            const halfCtx = halfCanvas.getContext("2d");
-            halfCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height / 2, 0, 0, halfCanvas.width, halfCanvas.height);
-            const imgData = halfCanvas.toDataURL("image/png");
-            imgEl.src = imgData;
-            imgEl.style.opacity = "1";
-            localStorage.setItem(cacheKey, imgData);
-          } catch {
-            imgEl.src = "Assets/Icons/Icon.png";
-            imgEl.style.opacity = "1";
-          }
-        }
-      }
-      viewMoreBtn.style.display = filtered.length > visibleCount ? "block" : "none";
-    }
-
-    searchInput.addEventListener("input", e => {
-      const q = e.target.value.toLowerCase();
-      const filtered = projects.filter(p =>
-        p.title.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q) ||
-        p.tags.join(" ").toLowerCase().includes(q) ||
-        p.link.toLowerCase().includes(q) ||
-        p.pdf.toLowerCase().includes(q)
-      );
-      visibleCount = 12;
-      renderProjects(filtered);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/LearningClub-Key-of-Success-Learning-Point/service-worker.js', {
+      scope: '/LearningClub-Key-of-Success-Learning-Point/'
+    }).then(reg => {
+      console.log('ServiceWorker registered:', reg.scope);
+    }).catch(err => {
+      console.error('SW registration failed:', err);
     });
-
-    viewMoreBtn.addEventListener("click", () => {
-      visibleCount += 12;
-      renderProjects();
-    });
-
-    renderProjects();
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-/* Mobile toggle */
-document.querySelector(".nav-toggle")
-  .addEventListener("click", () =>
-    document.getElementById("anhMainNav").classList.toggle("open")
-  );
+  }
 </script>
-<script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+<script src="/LearningClub-Key-of-Success-Learning-Point/pwa.js"></script>
+
+<script>
+  (function(){
+    const btnLite = document.getElementById('download-lite');
+    const btnFull = document.getElementById('download-full');
+    const btnClear = document.getElementById('clear-cache');
+    const statusEl = document.getElementById('pwa-status');
+    const progressBar = document.querySelector('#pwa-progress > i');
+    const storageInfo = document.getElementById('storage-info');
+    const installBtn = document.getElementById('install-btn');
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+      statusEl.textContent = choice.outcome === 'accepted' ? 'App installed' : 'Install dismissed';
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await LearningClubPWA.init({
+          onStateChange: (info) => {
+            statusEl.textContent = info.state ? String(info.state) : JSON.stringify(info);
+            if (info.state === 'download-start') progressBar.style.width = '2%';
+            if (info.state === 'cache-cleared') { progressBar.style.width = '0%'; updateStorageEstimate(); }
+          },
+          onProgress: (progress) => {
+            const filesCached = progress.filesCached || 0;
+            const totalFiles = progress.totalFiles || 0;
+            if (progress.cachedBytes && progress.totalBytes) {
+              const pct = Math.round((progress.cachedBytes / progress.totalBytes) * 100);
+              progressBar.style.width = pct + '%';
+              statusEl.textContent = `Downloading ${progress.package}: ${pct}% (${filesCached}/${totalFiles})`;
+            } else {
+              const pct = totalFiles > 0 ? Math.round((filesCached / totalFiles) * 100) : 0;
+              progressBar.style.width = pct + '%';
+              statusEl.textContent = `Downloading ${progress.package}: ${pct}% (${filesCached}/${totalFiles})`;
+            }
+            if (filesCached % 5 === 0) updateStorageEstimate();
+          },
+          onComplete: (info) => {
+            statusEl.textContent = `Download complete (${info.package}). Files: ${info.filesCached}/${info.totalFiles}`;
+            progressBar.style.width = '100%';
+            updateStorageEstimate();
+          },
+          onError: (err) => {
+            statusEl.textContent = 'Error: ' + (err && (err.error || err.message) ? (err.error || err.message) : JSON.stringify(err));
+          }
+        });
+        updateStorageEstimate();
+      } catch (e) {
+        statusEl.textContent = 'SW init error: ' + (e && e.message ? e.message : e);
+      }
+    });
+
+    btnLite.addEventListener('click', async () => {
+      statusEl.textContent = 'Requesting lite package…';
+      try { await LearningClubPWA.requestDownload('lite'); } catch (e) { statusEl.textContent = 'Error: ' + (e.message || e); }
+    });
+    btnFull.addEventListener('click', async () => {
+      statusEl.textContent = 'Requesting full package…';
+      try { await LearningClubPWA.requestDownload('full'); } catch (e) { statusEl.textContent = 'Error: ' + (e.message || e); }
+    });
+    btnClear.addEventListener('click', async () => {
+      if (!confirm('Remove downloaded offline package caches?')) return;
+      try { await LearningClubPWA.clearCachedPackage(); statusEl.textContent = 'Clearing caches…'; } catch (e) { statusEl.textContent = 'Error clearing caches: ' + (e.message || e); }
+    });
+
+    async function updateStorageEstimate() {
+      try {
+        const est = await LearningClubPWA.getStorageEstimate();
+        if (!est) { storageInfo.textContent = 'Storage: not available'; return; }
+        storageInfo.textContent = `Storage: ${est.usageInMB.toFixed(2)} MB used of ${est.quotaInMB.toFixed(2)} MB`;
+      } catch (e) {
+        storageInfo.textContent = 'Storage: error';
+      }
+    }
+  })();
+</script>
 </body>
 </html>
