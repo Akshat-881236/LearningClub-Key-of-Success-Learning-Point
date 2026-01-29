@@ -1,4 +1,8 @@
-const pdfjsLib = window["pdfjs-dist/build/pdf"];
+
+  document.addEventListener("DOMContentLoaded", () => {
+  // all code here
+
+  const pdfjsLib = window["pdfjs-dist/build/pdf"];
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
     // Sort by date (newest first)
@@ -86,3 +90,5 @@ document.querySelector(".nav-toggle")
   .addEventListener("click", () =>
     document.getElementById("anhMainNav").classList.toggle("open")
   );
+
+});
