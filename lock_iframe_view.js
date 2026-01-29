@@ -110,9 +110,6 @@ if (location.hostname !== ALLOWED_HOST) {
       </div>
     </div>
   `;
-
-  // Stop all further JS execution
-  throw new Error("Unauthorized Host Blocked");
 }
 
 
