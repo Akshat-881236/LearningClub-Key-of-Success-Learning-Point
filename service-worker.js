@@ -56,7 +56,6 @@ const CORE_ASSETS = [
   "/LearningClub-Key-of-Success-Learning-Point/script.js",
   "/LearningClub-Key-of-Success-Learning-Point/style.css",
   "/LearningClub-Key-of-Success-Learning-Point/projects.js",
-  "/LearningClub-Key-of-Success-Learning-Point/Loader.js",
   /* ---------- ANH GLOBAL JS ---------- */
   "https://akshat-881236.github.io/TrackerJS/MITLicense-Term-of-Use--Privacy.min.js",
   "https://akshat-881236.github.io/sitemapjs/breadcrumb.js",
