@@ -67,13 +67,55 @@
      ALSO ONLOAD CHECK PAGE URL MATCH ALLOW PATTERNS . URL MUST MATCH ABOVE RULES
      ========================= */
 
-     /* Check if the current page URL matches allowed patterns */
-     if (location.hostname !== ALLOWED_HOST) {
-       alert("Access Denied: Unauthorized Host. See you on Learning Club Official Site!");
-       /* Redirect to ( https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/ ) */
-       window.location.href = 'https://' + ALLOWED_HOST + '/LearningClub-Key-of-Success-Learning-Point/';
-       return;
-     }
+/* Optional comment shown to user (can be customized or left empty) */
+const ACCESS_COMMENT = "This content is restricted to the official Learning Club domain.";
+
+if (location.hostname !== ALLOWED_HOST) {
+  // Alert with optional comment
+  alert(
+    "Access Denied: Unauthorized Host.\n\n" +
+    (ACCESS_COMMENT ? "Note: " + ACCESS_COMMENT + "\n\n" : "") +
+    "You will be redirected to the official Learning Club site."
+  );
+
+  const redirectURL =
+    "https://" + ALLOWED_HOST + "/LearningClub-Key-of-Success-Learning-Point/";
+
+  // Open official site in new tab
+  window.open(redirectURL, "_blank", "noopener,noreferrer");
+
+  /* ===== HARD BLOCK CURRENT PAGE ===== */
+
+  // Stop page loading
+  document.documentElement.innerHTML = "";
+
+  // Optional visual block message
+  document.body.innerHTML = `
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      background:#0b0b0b;
+      color:#ffffff;
+      font-family:Arial, sans-serif;
+      text-align:center;
+      padding:20px;
+    ">
+      <div>
+        <h1 style="color:#ff4d4d;">Access Restricted</h1>
+        <p>This page is not authorized to run on this domain.</p>
+        ${ACCESS_COMMENT ? `<p><b>Reason:</b> ${ACCESS_COMMENT}</p>` : ""}
+        <p>Please use the official Learning Club website.</p>
+      </div>
+    </div>
+  `;
+
+  // Stop all further JS execution
+  throw new Error("Unauthorized Host Blocked");
+}
+
+
 
   /* =========================
      HELPERS
