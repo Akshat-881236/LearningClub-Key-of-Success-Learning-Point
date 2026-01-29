@@ -58,11 +58,20 @@ const projects = [
       {
         title: "Matriculation Certificate",
         desc: "Digitally Sign By Digilocker 10th Marksheet of Akshat Prasad.",
-        pdf: "LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/10thDMC.pdf",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/10thDMC.pdf",
         link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/10thDMC.htm",
         tags: ["10th DMC", "Board Exam", "Matriculation", "Secondary School Exam"],
         date: "2026-01-22"
       },
+      {
+        title: "Introduction to SEO",
+        desc: "Introduction to Different Search Engines and Search Engine Optimization.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/SEOChapter-1.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/SEOChapter-1.htm",
+        tags: ["SEO", "Search Engine", "Google", "SEO Strategies","Ranking"],
+        date: "2026-01-22"
+      },
+      
       {
         title: "Intermediate Certificate",
         desc: "Digitally Sign By Digilocker 12th Marksheet of Akshat Prasad.",

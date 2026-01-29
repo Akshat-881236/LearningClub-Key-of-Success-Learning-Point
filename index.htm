@@ -159,6 +159,8 @@
     <h1>Learning Club – A Hub of Knowledge</h1>
     <p>Powered by Akshat Network Hub | Open Web Initiative</p>
     <aside id="pwa-controls" aria-live="polite" style="position:fixed;right:12px;bottom:12px;background:#fff;border-radius:8px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.12);z-index:9999;font-family:system-ui;">
+      <!-- Cross Icon to close PWA controls -->
+      <button id="close-pwa-controls" style="position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;font-size:16px;color:#0b4f6c;"><i class="bi bi-x-lg"></i></button>
   <h4 style="margin:0 0 8px 0;color:#0b4f6c;font-size:14px;">Offline App (Learning Club)</h4>
   <div>
     <button id="download-lite" title="Approx 40MB" style="margin-right:6px;background:#0b4f6c;color:#fff;padding:8px;border:0;border-radius:6px;cursor:pointer;">Download Lite (≈40MB)</button>
@@ -509,6 +511,12 @@
       }
     }
   })();
+
+  /* Close PWA controls */
+  document.getElementById('close-pwa-controls').addEventListener('click', () => {
+    document.getElementById('pwa-controls').style.display = 'none';
+  });
+
 </script>
 </body>
 </html>

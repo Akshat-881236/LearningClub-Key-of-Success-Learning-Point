@@ -52,9 +52,7 @@ const CORE_ASSETS = [
   "/LearningClub-Key-of-Success-Learning-Point/manifest.json",
   "/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js",
   "/LearningClub-Key-of-Success-Learning-Point/No_print.htm",
-  "/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js",
   "/LearningClub-Key-of-Success-Learning-Point/pwa.js",
-  "/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js",
   "/LearningClub-Key-of-Success-Learning-Point/script.js",
   "/LearningClub-Key-of-Success-Learning-Point/style.css",
   "/LearningClub-Key-of-Success-Learning-Point/projects.js",
@@ -74,6 +72,16 @@ const CORE_ASSETS = [
   /* ---------- PDF.JS ---------- */
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js",
+  "https://github.com/akshat-881236/LearningClub-Key-of-Success-Learning-Point/tree/main/PdfLibrary",
+  "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView",
+  "https://akshat-881236.github.io/Quizzone/",
+  "https://akshat-881236.github.io/Quizzone/Home/QuizzoneAI.htm",
+  "https://akshat-881236.github.io/LocalRepo/",
+  "https://akshat-881236.github.io/SitemapGeneratorXml/",
+  "https://akshat-881236.github.io/DPGStudent-881238/",
+  "https://akshat-881236.github.io/DPGStudent-881238/Assignment_Frontpage_DPG_STM_Akshat_Network_Hub.htm",
+  "https://akshat-881236.github.io/DPGStudent-881238/Practical_DPG_STM_Akshat_Network_Hub.htm",
+  "https://akshat-881236.github.io/sitemapjs/",
 
   /* ---------- LOGOS & ICONS ---------- */
   "/Assets/Icons/Icon.png",
@@ -105,6 +113,22 @@ const CORE_ASSETS = [
   "/Assets/Logoes/icon-192.png",
   "/Assets/Logoes/icon-256.png",
 
+  "/Assets/SearchEngineLogoes/SearchEngineImage.png",
+  "/Assets/SearchEngineLogoes/SEOLogo.png",
+  "/Assets/SearchEngineLogoes/Ask.com/Ask_icon.png",
+  "/Assets/SearchEngineLogoes/Ask.com/Dogpile_logo.png",
+  "/Assets/SearchEngineLogoes/Bing/Bing_icon.png",
+  "/Assets/SearchEngineLogoes/Bing/Bing_logo.svg",
+  "/Assets/SearchEngineLogoes/Google/Google_icon.png",
+  "/Assets/SearchEngineLogoes/Google/Google_logo.png",
+  "/Assets/SearchEngineLogoes/Yahoo/Yahoo_icon.png",
+  "/Assets/SearchEngineLogoes/Yahoo/Yahoo_logo.png",
+  "/Assets/SearchEngineLogoes/Yandex/Yandex_icon.png",
+  "/Assets/SearchEngineLogoes/Yandex/Yandex_logo.png",
+  "/Assets/SearchEngineLogoes/DuckDuckGo/DuckDuckGo_icon.png",
+  "/Assets/SearchEngineLogoes/DuckDuckGo/DuckDuckGo_logo.png",
+  "/Assets/SearchEngineLogoes/Baidu/Baidu_icon.png",
+  "/Assets/SearchEngineLogoes/Baidu/Baidu_logo.png",
 
   /* ---------- PDF LIBRARY ROOT ---------- */
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/",
@@ -129,6 +153,7 @@ const FULL_PACKAGE_ADDITIONAL = [
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/PhysiographicDivisionOfIndia.pdf",
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Physical%20Education%20Practical%20File%20Demo.pdf",
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Quizzone%20Homepage%20-%20Akshat%20Network%20Hub%20Source%20Code.pdf",
+  "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/SEOChapter-1.pdf",
 
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/AkshatHtmlBoilerPlate.htm",
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/ANHTermofUse.htm",
@@ -139,7 +164,8 @@ const FULL_PACKAGE_ADDITIONAL = [
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneHomepageSourceCode.htm",
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/10thDMC.htm",
   "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/12thDMC.htm",
-  "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/BCASEM-1DMC.htm"
+  "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/BCASEM-1DMC.htm",
+  "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/SEOChapter-1.htm",
   // Add more files as needed
 ];
 

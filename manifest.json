@@ -47,9 +47,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Latest PDF",
-      "short_name": "Latest PDF",
-      "description": "Open the most recent Learning Club PDF",
+      "name": "Quizzone Homepage Source Code",
+      "short_name": "Quizzone Source",
+      "description": "Access the Quizzone Homepage Source Code",
       "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneHomepageSourceCode.htm",
       "icons": [
         {
@@ -59,10 +59,22 @@
       ]
     },
     {
+      "name": "Search Engine Optimization Chapter 1",
+      "short_name": "SEO Chapter 1",
+      "description": "Introduction to Search Engine Optimization and Search Engines",
+      "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/SEOChapter-1.htm",
+      "icons": [
+        {
+          "src": "/Assets/SearchEngineLogoes/SEOLogo-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
       "name": "PDF Library",
       "short_name": "PDFs",
       "description": "Browse all PDF documents",
-      "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/",
+      "url": "https://github.com/akshat-881236/LearningClub-Key-of-Success-Learning-Point/tree/main/PdfLibrary",
       "icons": [
         {
           "src": "/Assets/Icons/icon-96.png",
@@ -86,7 +98,10 @@
   "categories": [
     "education",
     "productivity",
-    "reference"
+    "reference",
+    "pdfViewer",
+    "learning",
+    "offlineFirst"
   ],
   "lang": "en-US",
   "related_applications": [],
