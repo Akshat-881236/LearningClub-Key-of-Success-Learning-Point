@@ -10,37 +10,37 @@
   "theme_color": "#0b4f6c",
   "icons": [
     {
-      "src": "/Assets/Icons/icon-72.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-96.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-128.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-192.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-256.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-384.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-384.png",
       "sizes": "384x384",
       "type": "image/png"
     },
     {
-      "src": "/Assets/Icons/icon-512.png",
+      "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -53,7 +53,7 @@
       "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/QuizzoneHomepageSourceCode.htm",
       "icons": [
         {
-          "src": "/Assets/Icons/icon-96.png",
+          "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-96.png",
           "sizes": "96x96"
         }
       ]
@@ -65,7 +65,7 @@
       "url": "https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/SEOChapter-1.htm",
       "icons": [
         {
-          "src": "/Assets/SearchEngineLogoes/SEOLogo-96.png",
+          "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/SearchEngineLogoes/SEOLogo-96.png",
           "sizes": "96x96"
         }
       ]
@@ -77,19 +77,7 @@
       "url": "https://github.com/akshat-881236/LearningClub-Key-of-Success-Learning-Point/tree/main/PdfLibrary",
       "icons": [
         {
-          "src": "/Assets/Icons/icon-96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "App Settings",
-      "short_name": "Settings",
-      "description": "Open Learning Club App Settings",
-      "url": "/LearningClub-Key-of-Success-Learning-Point/index.htm?settings=open",
-      "icons": [
-        {
-          "src": "/Assets/Icons/icon-96.png",
+          "src": "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-96.png",
           "sizes": "96x96"
         }
       ]
