@@ -6,7 +6,177 @@
   Purpose  : Dual-Watermark PDF Viewer + Strict Print Restriction
   License  : MIT
 ============================================================
---><!DOCTYPE html><html lang="en"><head><script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Physical Education Sem-2 Practical File - Akshat Network Hub | Secure PDF Viewer</title><style>body{margin:0;background:#f4f6fa;font-family:Inter,sans-serif;overflow-x:hidden;transition:background .5s ease,color .5s ease}header{background:#0b4f6c;color:#fff;text-align:center;padding:14px;font-weight:600;letter-spacing:.5px;box-shadow:0 2px 8px rgba(0,0,0,.3)}#pdf-viewer{display:flex;flex-direction:column;align-items:center;padding:25px;transition:background .3s ease}canvas{margin-bottom:20px;box-shadow:0 4px 10px rgba(0,0,0,.15);border-radius:8px;background:#fff;max-width:95%;height:auto}.toolbar{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:row;background:#0b4f6c;border-radius:40px;box-shadow:0 3px 10px rgba(0,0,0,.3);padding:6px 10px;z-index:1000}.toolbar button{background:0 0;border:none;color:#fff;font-size:18px;margin:0 6px;cursor:pointer;transition:transform .2s}.toolbar button:hover{transform:scale(1.2)}#status-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);color:#fff;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:2000}.status-box{background:#fff;color:#222;padding:20px 30px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.4);text-align:center;width:280px}.status-step{font-weight:600;margin-bottom:10px;font-size:18px}.status-bar{width:100%;height:6px;background:#eee;border-radius:4px;overflow:hidden}.progress{height:6px;width:0;background:#0b4f6c;transition:width .4s ease}.status-message{font-size:14px;color:#333;margin-top:10px}@media (max-width:600px){.toolbar{flex-wrap:wrap;bottom:10px;right:10px}.toolbar button{font-size:16px;margin:4px}}@media print{body::before{content:"⚠ Printing of this document is restricted. Redirecting to policy page...";display:block;text-align:center;color:#c00;font-size:20px;margin-top:40vh}body :not(::before){display:none!important}}body.light{background:#f4f6fa;color:#222}body.dark{background:#111;color:#eee}body.dragon{background:#250000;color:#fc0}body.forest{background:#013220;color:#d0ffd0}body.ocean{background:#001f3f;color:#aee7ff}body.midnight{background:#0a0a23;color:#c2d3ff}</style></head><body class="light"><header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header><div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Physical%20Education%20Practical%20File%20Demo.pdf"></div><!-- Floating Toolbar --><div class="toolbar"><button id="prevPage">⬅️</button> <button id="nextPage">➡️</button> <button id="zoomOut">➖</button> <button id="zoomIn">➕</button> <button id="modeToggle">📖</button> <button id="themeToggle">🎨</button> <button id="download-btn">💾</button></div><!-- Overlay for Processing --><div id="status-overlay"><div class="status-box"><div class="status-step">Processing...</div><div class="status-bar"><div class="progress"></div></div><div class="status-message">Initializing...</div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script>const pdfContainer = document.getElementById("pdf-viewer");
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physical Education Sem-2 Practical File - Akshat Network Hub | Secure PDF Viewer</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #f4f6fa;
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    header {
+      background: #0b4f6c;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    #pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px;
+      transition: background 0.3s ease;
+    }
+    canvas {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      background: #fff;
+      max-width: 95%;
+      height: auto;
+    }
+
+    /* Floating Toolbar */
+    .toolbar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: row;
+      background: #0b4f6c;
+      border-radius: 40px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      z-index: 1000;
+    }
+    .toolbar button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      margin: 0 6px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .toolbar button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Status Overlay */
+    #status-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 2000;
+    }
+    .status-box {
+      background: #fff;
+      color: #222;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 280px;
+    }
+    .status-step {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .status-bar {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 6px;
+      width: 0;
+      background: #0b4f6c;
+      transition: width 0.4s ease;
+    }
+    .status-message {
+      font-size: 14px;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .toolbar { flex-wrap: wrap; bottom: 10px; right: 10px; }
+      .toolbar button { font-size: 16px; margin: 4px; }
+    }
+
+    @media print {
+      body::before {
+        content: "⚠ Printing of this document is restricted. Redirecting to policy page...";
+        display: block;
+        text-align: center;
+        color: #c00;
+        font-size: 20px;
+        margin-top: 40vh;
+      }
+      body *:not(::before) { display: none !important; }
+    }
+
+    /* Themes */
+    body.light { background: #f4f6fa; color: #222; }
+    body.dark { background: #111; color: #eee; }
+    body.dragon { background: #250000; color: #ffcc00; }
+    body.forest { background: #013220; color: #d0ffd0; }
+    body.ocean { background: #001f3f; color: #aee7ff; }
+    body.midnight { background: #0a0a23; color: #c2d3ff; }
+  </style>
+</head>
+<body class="light">
+
+  <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
+
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/Physical%20Education%20Practical%20File%20Demo.pdf"></div>
+
+  <!-- Floating Toolbar -->
+  <div class="toolbar">
+    <button id="prevPage">⬅️</button>
+    <button id="nextPage">➡️</button>
+    <button id="zoomOut">➖</button>
+    <button id="zoomIn">➕</button>
+    <button id="modeToggle">📖</button>
+    <button id="themeToggle">🎨</button>
+    <button id="download-btn">💾</button>
+  </div>
+
+  <!-- Overlay for Processing -->
+  <div id="status-overlay">
+    <div class="status-box">
+      <div class="status-step">Processing...</div>
+      <div class="status-bar"><div class="progress"></div></div>
+      <div class="status-message">Initializing...</div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const pdfContainer = document.getElementById("pdf-viewer");
     const pdfUrl = pdfContainer.getAttribute("href");
     const logoUrl = "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/Icon.png";
     const { jsPDF } = window.jspdf;
@@ -160,7 +330,10 @@
     });
     window.matchMedia("print").addEventListener("change", mql => {
       if (mql.matches) redirectToPolicy();
-    });</script><script>/* ============================================================
+    });
+  </script>
+  <script>
+/* ============================================================
    UPGRADE 1: FAB-LIKE TOOLBAR (EXPAND / COLLAPSE)
    ============================================================ */
 
@@ -843,4 +1016,9 @@ const wait = setInterval(() => {
     });
   }
 
-})();</script><script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script></body></html>
+})();
+
+</script>
+<script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+</body>
+</html>
