@@ -425,16 +425,6 @@
     return null;
   };
 
-  document.addEventListener("click", (e) => {
-    const a = e.target.closest("a");
-    if (a && a.target === "_blank") {
-      e.preventDefault();
-      alert("External navigation is restricted.");
-      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
-      redirectViolation("External navigation blocked");
-    }
-  });
-
   /* --------- 4. IFRAME EMBED BLOCK (FRAME BUSTING) --------- */
   if (window.top !== window.self) {
     redirectViolation("Iframe embedding blocked");
@@ -473,15 +463,7 @@
     window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
     redirectViolation("Cut action blocked");
   });
-
-  /* --------- 7. CONTEXT MENU HARD BLOCK --------- */
-  document.addEventListener("contextmenu", e => {
-    e.preventDefault();
-    alert("Context menu access is restricted.");
-    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
-    redirectViolation("Context menu blocked");
-  });
-
+  
 })();
 
   /* ============================================================
