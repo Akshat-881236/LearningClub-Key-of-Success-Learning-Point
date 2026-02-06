@@ -14,8 +14,8 @@
   <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Akshat 10th DMC | Secure PDF Viewer</title>
-  <link rel="icon" type="image/png" href="https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-144.png">
+  <title>Web Development -1 By Akshat Network Hub | ANH/WD/2530/01 | Secure PDF Viewer</title>
+
   <style>
     body {
       margin: 0;
@@ -151,7 +151,7 @@
 
   <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
 
-  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/12thDMC.pdf"></div>
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/WebDevelopment-1PracticalFile.pdf"></div>
 
   <!-- Floating Toolbar -->
   <div class="toolbar">
@@ -306,8 +306,8 @@
       }
       /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
       /* First ask user for custom title */
-      let customTitle = prompt("Enter a title for the downloaded PDF:", "Akshat_12th_DMC");
-      if (!customTitle || customTitle.trim() === "") { customTitle = "Akshat_12th_DMC"; }
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "Search_Engine_Optimization_Chapter_1");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "Search_Engine_Optimization_Chapter_1"; }
       doc.save(`${customTitle}.pdf`);
       stepMsg.textContent = "✅ Completed successfully!";
       setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
@@ -466,7 +466,7 @@
 
 })();
 
-/* ============================================================
+  /* ============================================================
    Akshat Network Hub
    Rich Dynamic PDF Sections + Edge-style Sidebar
    ============================================================ */
@@ -613,62 +613,32 @@
      2. Rich Content Map (2-page PDF)
      ------------------------------------------------------------ */
   const pageContentMap = {
-  1: {
-    content: `
-      <section class="page-content-section" id="section-page-1">
-        <h3>📊 Class 12 Result Overview & Performance Analysis</h3>
+    1: {
+      content: `
+        <section class="page-content-section" id="section-page-1">
+          <h3><i class="bi bi-book"></i> Document Overview</h3>
+          <div class="meta">Web Development - 1 (ANH/WD/2530/01)</div>
+          <span class="chip">Website</span>
+          <span class="chip">Html</span>
+          <span class="chip">CSS</span>
+          <span class="chip">JS</span>
+            <p>
+                This document show a list of Programs for Web Development - 1 Subject focuses on HTML5 , CSS3 , Vanilla JavaScript. It consists of total 21 programs.
+            </p>
+            <p>
+                The document is structurely divided into 3 broad parts :-
+            </p>
+            <ul>
+              <li>Program 1 - 8 (HTML Only)</li>
+              <li>Program 9 - 15 (HTML + Embedded CSS)</li>
+              <li>Program 16 - 21 (HTML + Basic JavaScript)</li>
+            </ul>
+        </section>
+      `
+    }
+  };
 
-        <div class="meta">Secondary Examination • Academic Record</div>
-
-        <span class="chip">12th DMC</span>
-        <span class="chip">Academic Performance</span>
-        <span class="chip">Result Analysis</span>
-
-        <p>
-          This page represents the <strong>Class 12 Detailed Marks Certificate (DMC)</strong>,
-          which officially documents subject-wise performance, grading structure,
-          and overall academic standing in the secondary school examination.
-        </p>
-
-        <p>
-          The DMC reflects consistent participation across all core subjects,
-          indicating balanced curriculum coverage including language,
-          mathematics, physics, and chemistry.
-        </p>
-
-        <p>
-          <strong>Performance Analysis:</strong><br>
-          The subject-wise distribution of marks demonstrates the student’s
-          understanding of both theoretical concepts and practical application.
-          Strong alignment between internal assessment and board examination
-          scores suggests disciplined preparation and exam readiness.
-        </p>
-
-        <p>
-          Subjects involving analytical reasoning and conceptual clarity
-          indicate steady comprehension, while language and theory-based subjects
-          reflect reading, interpretation, and written expression skills.
-        </p>
-
-        <p>
-          <strong>Overall Interpretation:</strong><br>
-          The result indicates a stable academic foundation suitable for
-          progression into higher secondary education. The performance pattern
-          supports eligibility for multiple academic streams, depending on
-          institutional criteria and student interest.
-        </p>
-
-        <p style="font-size:0.9rem;opacity:0.85;margin-top:12px;">
-          📌 Note: This analysis is interpretative and intended for learning,
-          documentation, and presentation purposes within the Learning Club
-          ecosystem.
-        </p>
-      </section>
-    `
-  }
-};
-
-/* ------------------------------------------------------------
+  /* ------------------------------------------------------------
      3. Inject Content Around PDF Pages
      ------------------------------------------------------------ */
   /* ------------------------------------------------------------
@@ -720,8 +690,6 @@ const wait = setInterval(() => {
 
   buildSidebar(totalPages);
 }, 300);
-
-
 
   /* ------------------------------------------------------------
      4. Edge-style Sidebar Navigation

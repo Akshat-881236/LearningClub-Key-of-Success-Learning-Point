@@ -71,7 +71,6 @@ const projects = [
         tags: ["SEO", "Search Engine", "Google", "SEO Strategies","Ranking"],
         date: "2026-01-22"
       },
-      
       {
         title: "Intermediate Certificate",
         desc: "Digitally Sign By Digilocker 12th Marksheet of Akshat Prasad.",
@@ -87,5 +86,13 @@ const projects = [
         link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/BCASEM-1DMC.htm",
         tags: ["BCA SEM - 1 DMC", "UG Exam", "Higher Education", "Undergraduate Exam"],
         date: "2026-01-24"
+      },
+      {
+        title: "Web Development - 1 Practical File",
+        desc: "A Practical File of HTML5 , CSS3 and Vanilla JavaScript having 21 Programs.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/WebDevelopment-1PracticalFile.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/WebDevelopment-1PracticalFile.htm",
+        tags: ["SEO", "Website", "HTML5", "CSS3","JavaScript","Practical File","Programs"],
+        date: "2026-01-25"
       }
     ];
