@@ -306,8 +306,8 @@
       }
       /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
       /* First ask user for custom title */
-      let customTitle = prompt("Enter a title for the downloaded PDF:", "Search_Engine_Optimization_Chapter_1");
-      if (!customTitle || customTitle.trim() === "") { customTitle = "Search_Engine_Optimization_Chapter_1"; }
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "WebDevelopment-1PracticalFile");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "WebDevelopment-1PracticalFile"; }
       doc.save(`${customTitle}.pdf`);
       stepMsg.textContent = "✅ Completed successfully!";
       setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
