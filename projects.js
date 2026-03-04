@@ -102,5 +102,5 @@ const projects = [
         link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/CG_PracticalFile_Sem-4_BCA.htm",
         tags: ["Computer Graphics", "3D Graphics", "2D Graphics", "NEP 2020", "DSC", "Practical file","CG Programs","CG"],
         date: "2026-03-04"
-      },
+      }
     ];
