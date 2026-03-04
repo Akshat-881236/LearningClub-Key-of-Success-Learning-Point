@@ -94,5 +94,13 @@ const projects = [
         link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/WebDevelopment-1PracticalFile.htm",
         tags: ["SEO", "Website", "HTML5", "CSS3","JavaScript","Practical File","Programs"],
         date: "2026-01-25"
-      }
+      },
+      {
+        title: "Computer Graphics Practical File",
+        desc: "Practical File of Computer Graphics Semester 2 MIC NEP , 2020 Course.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/CG_PracticalFile_Sem-4_BCA.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/CG_PracticalFile_Sem-4_BCA.htm",
+        tags: ["Computer Graphics", "3D Graphics", "2D Graphics", "NEP 2020", "DSC", "Practical file","CG Programs","CG"],
+        date: "2026-03-04"
+      },
     ];

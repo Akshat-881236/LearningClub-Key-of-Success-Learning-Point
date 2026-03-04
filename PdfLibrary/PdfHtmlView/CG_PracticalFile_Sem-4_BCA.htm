@@ -1,0 +1,1035 @@
+<!--
+============================================================
+  Akshat Network Hub - Universal PDF Viewer (Print-Protected Final)
+  Author   : Akshat Prasad
+  Identity : Akshat Network | Open Web Initiative
+  Purpose  : Dual-Watermark PDF Viewer + Strict Print Restriction
+  License  : MIT
+============================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computer Graphic Practical File | Secure PDF Viewer</title>
+  <link rel="icon" type="image/png" href="https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-144.png">
+  <style>
+    body {
+      margin: 0;
+      background: #f4f6fa;
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    header {
+      background: #0b4f6c;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    #pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px;
+      transition: background 0.3s ease;
+    }
+    canvas {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      background: #fff;
+      max-width: 95%;
+      height: auto;
+    }
+
+    /* Floating Toolbar */
+    .toolbar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: row;
+      background: #0b4f6c;
+      border-radius: 40px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      z-index: 1000;
+    }
+    .toolbar button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      margin: 0 6px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .toolbar button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Status Overlay */
+    #status-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 2000;
+    }
+    .status-box {
+      background: #fff;
+      color: #222;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 280px;
+    }
+    .status-step {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .status-bar {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 6px;
+      width: 0;
+      background: #0b4f6c;
+      transition: width 0.4s ease;
+    }
+    .status-message {
+      font-size: 14px;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .toolbar { flex-wrap: wrap; bottom: 10px; right: 10px; }
+      .toolbar button { font-size: 16px; margin: 4px; }
+    }
+
+    @media print {
+      body::before {
+        content: "⚠ Printing of this document is restricted. Redirecting to policy page...";
+        display: block;
+        text-align: center;
+        color: #c00;
+        font-size: 20px;
+        margin-top: 40vh;
+      }
+      body *:not(::before) { display: none !important; }
+    }
+
+    /* Themes */
+    body.light { background: #f4f6fa; color: #222; }
+    body.dark { background: #111; color: #eee; }
+    body.dragon { background: #250000; color: #ffcc00; }
+    body.forest { background: #013220; color: #d0ffd0; }
+    body.ocean { background: #001f3f; color: #aee7ff; }
+    body.midnight { background: #0a0a23; color: #c2d3ff; }
+  </style>
+</head>
+<body class="light">
+
+  <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
+
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/CG_PracticalFile_Sem-4_BCA.pdf"></div>
+
+  <!-- Floating Toolbar -->
+  <div class="toolbar">
+    <button id="prevPage">⬅️</button>
+    <button id="nextPage">➡️</button>
+    <button id="zoomOut">➖</button>
+    <button id="zoomIn">➕</button>
+    <button id="modeToggle">📖</button>
+    <button id="themeToggle">🎨</button>
+    <button id="download-btn">💾</button>
+  </div>
+
+  <!-- Overlay for Processing -->
+  <div id="status-overlay">
+    <div class="status-box">
+      <div class="status-step">Processing...</div>
+      <div class="status-bar"><div class="progress"></div></div>
+      <div class="status-message">Initializing...</div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const pdfContainer = document.getElementById("pdf-viewer");
+    const pdfUrl = pdfContainer.getAttribute("href");
+    const logoUrl = "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/Icon.png";
+    const { jsPDF } = window.jspdf;
+    const pdfjsLib = window["pdfjs-dist/build/pdf"];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+    let pdfDoc = null, renderedPages = [], currentPage = 1, scale = 1.2, viewMode = "scroll";
+    const logoImage = new Image(); logoImage.src = logoUrl;
+    const themes = ["light","dark","dragon","forest","ocean","midnight"];
+    let currentThemeIndex = 0;
+
+    logoImage.onload = async () => renderPDF();
+
+    async function renderPDF() {
+      pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+      renderAllPages();
+    }
+
+    async function renderAllPages() {
+      pdfContainer.innerHTML = "";
+      renderedPages = [];
+      const total = pdfDoc.numPages;
+
+      for (let i = 1; i <= total; i++) {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        applyWatermarks(canvas, logoImage);
+        canvas.dataset.page = i;
+        pdfContainer.appendChild(canvas);
+        renderedPages.push(canvas);
+      }
+      updateBookView();
+    }
+
+    function applyWatermarks(canvas, logo) {
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.font = "bold 36px Inter";
+      ctx.fillStyle = "#0b4f6c";
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(-Math.PI / 4);
+      const text = "© Akshat Network Hub";
+      const spacing = 200;
+      ctx.fillText(text, -250, -spacing);
+      ctx.fillText(text, -250, 0);
+      ctx.fillText(text, -250, spacing);
+      ctx.restore();
+
+      const logoSize = 80;
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(logo, canvas.width - logoSize - 20, canvas.height - logoSize - 20, logoSize, logoSize);
+      ctx.globalAlpha = 1;
+    }
+
+    function updateBookView() {
+      renderedPages.forEach(c => c.style.display = (viewMode === "book" ? "none" : "block"));
+      if (viewMode === "book") renderedPages[currentPage - 1].style.display = "block";
+    }
+
+    document.getElementById("prevPage").onclick = () => {
+      if (viewMode === "book" && currentPage > 1) {
+        currentPage--; updateBookView();
+      }
+    };
+    document.getElementById("nextPage").onclick = () => {
+      if (viewMode === "book" && currentPage < renderedPages.length) {
+        currentPage++; updateBookView();
+      }
+    };
+    document.getElementById("zoomIn").onclick = () => { scale += 0.2; renderAllPages(); };
+    document.getElementById("zoomOut").onclick = () => { if (scale > 0.6) scale -= 0.2; renderAllPages(); };
+    document.getElementById("modeToggle").onclick = () => {
+      viewMode = (viewMode === "scroll") ? "book" : "scroll"; updateBookView();
+    };
+    document.getElementById("themeToggle").onclick = () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      document.body.className = themes[currentThemeIndex];
+    };
+
+    // Swipe gestures
+    let startX = 0;
+    pdfContainer.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    pdfContainer.addEventListener("touchend", e => {
+      let diff = e.changedTouches[0].clientX - startX;
+      if (viewMode === "book") {
+        if (diff < -50 && currentPage < renderedPages.length) currentPage++;
+        if (diff > 50 && currentPage > 1) currentPage--;
+        updateBookView();
+      }
+    });
+
+    // Download with progress
+    const statusOverlay = document.getElementById("status-overlay");
+    const progress = document.querySelector(".progress");
+    const stepTitle = document.querySelector(".status-step");
+    const stepMsg = document.querySelector(".status-message");
+    const steps = [
+      { msg: "Preparing PDF...", color: "#0b4f6c" },
+      { msg: "Rendering pages...", color: "#1597e5" },
+      { msg: "Applying watermark...", color: "#f4a261" },
+      { msg: "Building final file...", color: "#2a9d8f" },
+      { msg: "Finalizing & downloading...", color: "#264653" }
+    ];
+
+    async function downloadPDFWithWatermark() {
+      statusOverlay.style.display = "flex";
+      const totalSteps = steps.length;
+      const doc = new jsPDF();
+      for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        progress.style.background = s.color;
+        progress.style.width = `${((i + 1) / totalSteps) * 100}%`;
+        stepTitle.textContent = `Step ${i + 1} of ${totalSteps}`;
+        stepMsg.textContent = `${s.msg} (${Math.round(((i + 1) / totalSteps) * 100)}%)`;
+        await new Promise(r => setTimeout(r, 700));
+      }
+      for (let i = 0; i < renderedPages.length; i++) {
+        const img = renderedPages[i].toDataURL("image/png");
+        doc.addImage(img, "PNG", 0, 0, 210, 297);
+        if (i < renderedPages.length - 1) doc.addPage();
+      }
+      /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
+      /* First ask user for custom title */
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "CG_PracticalFile_Sem-4_BCA");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "CG_PracticalFile_Sem-4_BCA"; }
+      doc.save(`${customTitle}.pdf`);
+      stepMsg.textContent = "✅ Completed successfully!";
+      setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
+    }
+    document.getElementById("download-btn").onclick = downloadPDFWithWatermark;
+
+    // Print restriction
+    const redirectToPolicy = () => {
+      const currentPage = encodeURIComponent(window.location.pathname);
+      window.location.href = `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${currentPage}`;
+    };
+    window.addEventListener("beforeprint", e => { e.preventDefault(); window.stop(); redirectToPolicy(); });
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") { e.preventDefault(); redirectToPolicy(); }
+    });
+    window.addEventListener("contextmenu", e => {
+      if (e.target.tagName.toLowerCase().includes("canvas")) {
+        e.preventDefault(); alert("Printing of this document is restricted by policy.");
+      }
+    });
+    window.matchMedia("print").addEventListener("change", mql => {
+      if (mql.matches) redirectToPolicy();
+    });
+  </script>
+  <script>
+/* ============================================================
+   UPGRADE 1: FAB-LIKE TOOLBAR (EXPAND / COLLAPSE)
+   ============================================================ */
+
+(function () {
+  const toolbar = document.querySelector(".toolbar");
+  if (!toolbar) return;
+
+  toolbar.style.transition = "all 0.35s ease";
+  toolbar.style.overflow = "hidden";
+  toolbar.style.width = "48px";
+  toolbar.style.padding = "6px";
+
+  let expanded = false;
+
+  const expandToolbar = () => {
+    if (expanded) return;
+    toolbar.style.width = "auto";
+    toolbar.style.padding = "6px 12px";
+    toolbar.classList.add("expanded");
+    expanded = true;
+  };
+
+  const collapseToolbar = () => {
+    if (!expanded) return;
+    toolbar.style.width = "48px";
+    toolbar.style.padding = "6px";
+    toolbar.classList.remove("expanded");
+    expanded = false;
+  };
+
+  toolbar.addEventListener("mouseenter", expandToolbar);
+  toolbar.addEventListener("mouseleave", collapseToolbar);
+
+  // Mobile touch support
+  toolbar.addEventListener("click", () => {
+    expanded ? collapseToolbar() : expandToolbar();
+  });
+})();
+
+/* ============================================================
+   UPGRADE 2: SECURITY & REDIRECTION HARDENING
+   ============================================================ */
+
+(function () {
+  const redirectViolation = (reason) => {
+    console.warn("Security Policy Triggered:", reason);
+    const from = encodeURIComponent(window.location.pathname);
+    window.location.href =
+      `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${from}&reason=${encodeURIComponent(reason)}`;
+  };
+
+  /* --------- 1. BLOCK SCREENSHOT KEYS --------- */
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+
+    // Print Screen
+    if (key === "printscreen") {
+      e.preventDefault();
+      redirectViolation("Screenshot attempt detected");
+    }
+
+    // Windows Snipping Tool / macOS screenshot combos
+    if (
+      (e.metaKey && e.shiftKey && ["3", "4", "5"].includes(key)) ||
+      (e.ctrlKey && e.shiftKey && key === "s")
+    ) {
+      e.preventDefault();
+      redirectViolation("Screen capture shortcut blocked");
+    }
+  });
+
+  /* --------- 2. VISIBILITY / TAB SWITCH DETECTION --------- */
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      redirectViolation("Tab switch or background activity detected");
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    redirectViolation("Window focus lost");
+  });
+
+  /* --------- 3. BLOCK NEW TAB / WINDOW OPENING --------- */
+  const originalOpen = window.open;
+  window.open = function () {
+    alert("Opening new tabs or windows is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
+    redirectViolation("New tab or window blocked");
+    return null;
+  };
+
+  /* --------- 4. IFRAME EMBED BLOCK (FRAME BUSTING) --------- */
+  if (window.top !== window.self) {
+    redirectViolation("Iframe embedding blocked");
+    alert("This content cannot be displayed in an embedded frame.");
+    alert("Redirecting to secure viewer...");
+    window.top.location = window.self.location;
+  }
+
+  /* --------- 5. DEVTOOLS / INSPECT DETERRENCE --------- */
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(e.key.toLowerCase())) ||
+      (e.ctrlKey && e.key.toLowerCase() === "u")
+    ) {
+      e.preventDefault();
+      alert("Developer tools access is restricted.");
+      /* Redirecting User to /LearningClub-Key-of-Success-Learning-Point/Error/permission.htm */
+      alert("Redirecting to permission error page...");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+      redirectViolation("Developer tools blocked");
+    }
+  });
+
+  /* --------- 6. DISABLE TEXT SELECTION & COPY --------- */
+  document.addEventListener("selectstart", e => e.preventDefault());
+  document.addEventListener("copy", e => {
+    e.preventDefault();
+    alert("Copying content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Copy action blocked");
+  });
+  document.addEventListener("cut", e => {
+    e.preventDefault();
+    alert("Cutting content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Cut action blocked");
+  });
+
+})();
+
+/* ============================================================
+   Akshat Network Hub
+   Rich Dynamic PDF Sections + Edge-style Sidebar
+   ============================================================ */
+
+(function () {
+
+  /* ------------------------------------------------------------
+     1. Inner CSS (Edge-like polish)
+     ------------------------------------------------------------ */
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .page-content-section{
+      max-width:920px;
+      margin:32px auto;
+      padding:26px 30px;
+      background:linear-gradient(180deg,#ffffff,#f6f9fc);
+      border-radius:14px;
+      border:1px solid #e3e8ef;
+      box-shadow:0 10px 28px rgba(0,0,0,0.08);
+      font-family:Inter,system-ui,sans-serif;
+    }
+
+    .page-content-section h3{
+      font-size:1.15rem;
+      font-weight:700;
+      color:#0b4f6c;
+      margin:0 0 6px;
+    }
+
+    .page-content-section .meta{
+      font-size:.8rem;
+      color:#666;
+      margin-bottom:14px;
+    }
+
+    .page-content-section p{
+      font-size:.95rem;
+      line-height:1.75;
+      color:#222;
+      margin:0 0 10px;
+    }
+
+    .chip{
+      display:inline-block;
+      background:#e8f2f8;
+      color:#0b4f6c;
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:.75rem;
+      font-weight:600;
+      margin-right:6px;
+    }
+
+    /* Sidebar (Edge-style) */
+    #pdf-dynamic-sidebar{
+      position:fixed;
+      top:50%;
+      left:-280px;
+      transform:translateY(-50%);
+      width:280px;
+      height:78vh;
+      background:#0e3a52;
+      color:#fff;
+      padding:16px 14px;
+      border-radius:0 18px 18px 0;
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      transition:left .35s ease;
+      z-index:1600;
+      overflow-y:auto;
+    }
+    #pdf-dynamic-sidebar.open{ left:0; }
+
+    #pdf-dynamic-sidebar h4{
+      margin:0 0 14px;
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+
+    .nav-group{
+      margin-bottom:16px;
+    }
+
+    .nav-group-title{
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      opacity:.7;
+      margin-bottom:6px;
+    }
+
+    #pdf-dynamic-sidebar ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+
+    #pdf-dynamic-sidebar li{
+      padding:9px 10px;
+      margin-bottom:6px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:.9rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:background .25s;
+    }
+
+    #pdf-dynamic-sidebar li:hover{
+      background:rgba(255,255,255,.14);
+    }
+
+    #pdf-dynamic-sidebar li.active{
+      background:rgba(255,255,255,.25);
+      font-weight:600;
+    }
+
+    .badge{
+      background:rgba(255,255,255,.25);
+      padding:2px 8px;
+      border-radius:10px;
+      font-size:.7rem;
+    }
+
+    #pdf-sidebar-handle{
+      position:fixed;
+      top:50%;
+      left:0;
+      transform:translateY(-50%);
+      background:#0e3a52;
+      color:#fff;
+      padding:12px 8px;
+      border-radius:0 8px 8px 0;
+      cursor:pointer;
+      z-index:1700;
+      font-size:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,.4);
+    }
+  `;
+  document.head.appendChild(style);
+
+  /* ------------------------------------------------------------
+     2. Rich Content Map (2-page PDF)
+     ------------------------------------------------------------ */
+  const pageContentMap = {
+  1: {
+    content: `
+      <section class="page-content-section" id="section-page-1">
+        <h3>Computer Graphics Practical File - BCA SEM-4</h3>
+
+        <div class="meta">Secondary Examination • Academic Record</div>
+
+        <span class="chip">BCA SEM - 4 Practical File</span>
+        <span class="chip">Academic Performance</span>
+        <span class="chip">Result Analysis</span>
+
+        <p>
+          This page represents the <strong>BCA SEM - 4 Computer Graphics Practical File Lab Manual Document</strong>, listing all the practical perform by me in DPG Degree college, Gurugram. The document serves as a comprehensive record of the practical exercises completed during the semester, showcasing the application of theoretical concepts in computer graphics through hands-on lab work.
+        </p>
+
+            <p>
+            Each Program is implemented in C++ language and covers a wide range of topics including 2D and 3D graphics, transformations, rendering techniques, and interactive applications. The practical file includes detailed descriptions of each experiment, the code implementations, output screenshots, and analysis of results. It demonstrates my understanding of computer graphics principles and my ability to apply them in a practical setting. The document is structured to provide a clear and organized presentation of the practical work, making it a valuable resource for both academic evaluation and future reference in the field of computer graphics.
+        </p>
+      </section>
+    `
+  },
+  3: {
+    content: `
+      <section class="page-content-section" id="section-page-2">
+        <h3>Program - 1</h3>
+
+        <div class="meta"> Implement a program to define and use basic graphics primitives such as points, lines, and polygons.</div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 1</span>
+        <span class="chip">graphic.h</span>
+
+        <p>
+          This program demonstrates the use of basic graphics primitives in C++ using the graphics.h library. It defines and utilizes points, lines, and polygons to create simple 2D graphics. The program initializes a graphics window, sets up the necessary parameters, and then draws various shapes to illustrate the fundamental concepts of computer graphics. The output includes visual representations of points, lines, and polygons, showcasing how these primitives can be combined to create more complex graphical structures.
+        </p>
+      </section>
+    `
+  },
+  5: {
+    content: `
+      <section class="page-content-section" id="section-page-3">
+        <h3>Program - 2</h3>
+
+        <div class="meta">  Implement a program to draw a line using the Digital Differential Analyzer (DDA) algorithm. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 2</span>
+        <span class="chip">p2.cpp</span>
+
+        <p>
+          This program focuses on drawing a line using the Digital Differential Analyzer (DDA) algorithm in C++. It implements the DDA algorithm to generate a line between two given points in a 2D space. The program calculates intermediate points along the line and draws them using the graphics.h library, providing a clear understanding of how the DDA algorithm works in computer graphics. The output of the program is a straight line drawn on the graphics window, demonstrating the efficiency and accuracy of the DDA algorithm in rendering lines in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  7: {
+    content: `
+      <section class="page-content-section" id="section-page-4">
+        <h3>Program - 3</h3>
+
+        <div class="meta"> Create a program to draw a line using Bresenham's line drawing algorithm. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 3</span>
+        <span class="chip">p3.cpp</span>
+        <span class="chip">Bresenham's Algorithm</span>
+
+        <p>
+            This program implements Bresenham's line drawing algorithm in C++. It is designed to draw a line between two specified points in a 2D space using the Bresenham's algorithm, which is an efficient method for rasterizing lines. The program calculates the necessary points along the line path and renders them using the graphics.h library. The output is a visually accurate line drawn on the graphics window, demonstrating the effectiveness of Bresenham's algorithm in computer graphics for producing high-quality lines with minimal computational overhead.
+        </p>
+      </section>
+    `
+  },
+  9: {
+    content: `
+      <section class="page-content-section" id="section-page-5">
+        <h3>Program - 4</h3>
+
+        <div class="meta"> Write a program to draw a circle using the Midpoint Circle algorithm. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 4</span>
+        <span class="chip">p4.cpp</span>
+        <span class="chip">Midpoint Circle Algorithm</span>
+
+        <p>
+          This program demonstrates the implementation of the Midpoint Circle Algorithm in C++. It is designed to draw a circle with a specified center and radius in a 2D space. The program calculates the points along the circumference of the circle using the Midpoint Circle Algorithm, which is an efficient method for rasterizing circles. The output is a visually accurate circle rendered on the graphics window, showcasing the algorithm's ability to produce smooth and precise circular shapes in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  11: {
+    content: `
+      <section class="page-content-section" id="section-page-6">
+        <h3>Program - 5</h3>
+
+        <div class="meta"> Implement a program to draw a circle using Bresenham's circle drawing algorithm. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 5</span>
+        <span class="chip">p5.cpp</span>
+        <span class="chip">Bresenham's Circle Algorithm</span>
+
+        <p>
+          This program implements Bresenham's Circle Drawing Algorithm in C++. It is designed to draw a circle with a specified center and radius in a 2D space. The program calculates the points along the circumference of the circle using Bresenham's Circle Algorithm, which is an efficient method for rasterizing circles. The output is a visually accurate circle rendered on the graphics window, showcasing the algorithm's ability to produce smooth and precise circular shapes in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  13: {
+    content: `
+      <section class="page-content-section" id="section-page-7">
+        <h3>Program - 6</h3>
+
+        <div class="meta"> Create a program to perform 2D transformations: translation, rotation, and scaling on a given set of points.</div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 6</span>
+        <span class="chip">p6.cpp</span>
+        <span class="chip">2D Transformations</span>
+
+        <p>
+          This program demonstrates the implementation of 2D transformations in C++. It allows users to perform translation, rotation, and scaling operations on a given shape in a 2D space. The program utilizes the graphics.h library to render the original shape and the transformed shape on the graphics window. Users can input parameters for each transformation type, and the program will apply the transformations accordingly, showcasing the effects of translation, rotation, and scaling on the shape in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  15: {
+    content: `
+      <section class="page-content-section" id="section-page-8">
+        <h3>Program - 7</h3>
+
+        <div class="meta"> Write a program to perform mirror reflection of a 2D shape across the x-axis and y-axis. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 7</span>
+        <span class="chip">p7.cpp</span>
+        <span class="chip">Mirror Reflection</span>
+
+        <p>
+          This program implements mirror reflection of a 2D shape across the x-axis and y-axis in C++. It allows users to reflect a given shape in a 2D space along both axes. The program utilizes the graphics.h library to render the original shape and its reflected versions on the graphics window. Users can input the coordinates of the shape points, and the program will generate the reflected points accordingly, showcasing how mirror reflection works in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  18: {
+    content: `
+      <section class="page-content-section" id="section-page-9">
+        <h3>Program - 8</h3>
+
+        <div class="meta"> Create a program to draw basic two-dimensional objects like rectangles, triangles, and polygons using inbuilt functions. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 8</span>
+        <span class="chip">p8.cpp</span>
+        <span class="chip">Basic 2D Objects</span>
+
+        <p>
+          This program demonstrates the implementation of drawing basic 2D objects like rectangles, triangles, and polygons in C++. It allows users to draw these shapes using inbuilt functions from the graphics.h library. The program provides a simple interface for users to specify the coordinates and dimensions of each shape, rendering them on a graphics window. This showcases fundamental concepts in computer graphics such as shape rendering and coordinate manipulation.
+        </p>
+      </section>
+    `
+  },
+  20: {
+    content: `
+      <section class="page-content-section" id="section-page-10">
+        <h3>Program - 9</h3>
+
+        <div class="meta">  Write a program to implement the Cohen-Sutherland line clipping algorithm to clip a line within a rectangular clipping window.</div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 9</span>
+        <span class="chip">p9.cpp</span>
+        <span class="chip">Cohen-Sutherland Line Clipping</span>
+
+        <p>
+          This program implements the Cohen-Sutherland line clipping algorithm in C++. It allows users to define a rectangular clipping window and a line segment, then clips the line to fit within the window. The program uses bitwise operations to determine the region codes of each endpoint and efficiently determines whether the line is completely inside, completely outside, or partially inside the clipping window. This demonstrates fundamental concepts in computer graphics such as clipping algorithms and coordinate transformations.
+        </p>
+      </section>
+    `
+  },
+  24: {
+    content: `
+      <section class="page-content-section" id="section-page-11">
+        <h3>Program - 10</h3>
+
+        <div class="meta"> Write a program to apply a shearing transformation to a 2D object (like a square or triangle) and display the original and transformed objects. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 10</span>
+        <span class="chip">p10.cpp</span>
+        <span class="chip">Shearing Transformation</span>
+
+        <p>
+          This program implements a shearing transformation in C++ for 2D objects such as squares and triangles. It allows users to define a 2D object and apply shearing transformations along the x-axis and y-axis. The program displays both the original and transformed objects on a graphics window, demonstrating how shearing affects the shape of 2D objects in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  28: {
+    content: `
+      <section class="page-content-section" id="section-page-12">
+        <h3>Program - 11</h3>
+
+        <div class="meta"> Write a program to apply various coloring techniques to 2D pictures. </div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 11</span>
+        <span class="chip">p11.cpp</span>
+        <span class="chip">Coloring Techniques</span>
+
+        <p>
+          This program implements various coloring techniques for 2D pictures in C++. It allows users to apply different coloring methods such as solid color filling, gradient coloring, and pattern-based coloring to 2D objects. The program displays the original and colored versions of the 2D pictures on a graphics window, demonstrating how different coloring techniques can be applied in computer graphics applications.
+        </p>
+      </section>
+    `
+  },
+  31: {
+    content: `
+      <section class="page-content-section" id="section-page-13">
+        <h3>Program - 12</h3>
+
+        <div class="meta"> Write a program to implement line clipping using the Cohen-Sutherland line clipping algorithm.</div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 12</span>
+        <span class="chip">p12.cpp</span>
+        <span class="chip">Cohen-Sutherland Line Clipping</span>
+
+        <p>
+          This program implements the Cohen-Sutherland line clipping algorithm in C++. It allows users to define a rectangular clipping window and a line segment, then clips the line to fit within the window. The program uses bitwise operations to determine the region codes of each endpoint and efficiently determines whether the line is completely inside, completely outside, or partially inside the clipping window. This demonstrates fundamental concepts in computer graphics such as clipping algorithms and coordinate transformations.
+        </p>
+      </section>
+    `
+  },
+  35: {
+    content: `
+      <section class="page-content-section" id="section-page-14">
+        <h3>Program - 13</h3>
+
+        <div class="meta"> Write a program to perform 3D transformations: translation, rotation, and scaling on a set of 3D points.  </div>
+
+        <span class="chip">3D Graphics</span>
+        <span class="chip">Program 13</span>
+        <span class="chip">p13.cpp</span>
+        <span class="chip">3D Transformations</span>
+
+        <p>
+          This program implements 3D transformations such as translation, rotation, and scaling on a set of 3D points in C++. It allows users to define a set of 3D points and apply various transformation matrices to them. The program demonstrates fundamental concepts in 3D computer graphics such as transformation matrices, coordinate systems, and geometric transformations.
+        </p>
+      </section>
+    `
+  },
+  39 : {
+    content: `
+      <section class="page-content-section" id="section-page-15">
+        <h3>Program - 14</h3>
+
+        <div class="meta"> Implement a program to demonstrate simple animations using transformations such as translation, rotation, and scaling.</div>
+
+        <span class="chip">2D Graphics</span>
+        <span class="chip">Program 14</span>
+        <span class="chip">p14.cpp</span>
+        <span class="chip">Animation with Transformations</span>
+
+        <p>
+          This program demonstrates simple animations using transformations such as translation, rotation, and scaling in C++. It allows users to define a set of 2D or 3D points and apply transformations over time to create animated effects. The program showcases fundamental concepts in computer graphics such as animation techniques, transformation matrices, and time-based rendering.
+        </p>
+      </section>
+    `
+  },
+  43: {
+    content: `
+      <section class="page-content-section" id="section-page-16">
+        <h3>Program - 15</h3>
+
+        <div class="meta"> Write a program to apply various coloring techniques to 3D object. </div>
+
+        <span class="chip">3D Graphics</span>
+        <span class="chip">Program 15</span>
+        <span class="chip">p15.cpp</span>
+        <span class="chip">3D Object Coloring Techniques</span>
+
+        <p>
+          This program implements various coloring techniques for 3D objects in C++. It allows users to define a 3D object and apply different coloring methods such as flat shading, Gouraud shading, and Phong shading. The program demonstrates fundamental concepts in computer graphics such as lighting models, surface rendering, and color interpolation.
+        </p>
+      </section>
+    `
+  }
+};
+
+/* ------------------------------------------------------------
+     3. Inject Content Around PDF Pages
+     ------------------------------------------------------------ */
+  /* ------------------------------------------------------------
+   Reliable Content Injection (Refresh-Safe)
+   ------------------------------------------------------------ */
+let lastCanvasCount = 0;
+let stableTicks = 0;
+
+const wait = setInterval(() => {
+  const canvases = [...document.querySelectorAll("canvas[data-page]")];
+
+  if (!canvases.length) return;
+
+  // Check if canvas count stopped increasing
+  if (canvases.length === lastCanvasCount) {
+    stableTicks++;
+  } else {
+    stableTicks = 0;
+    lastCanvasCount = canvases.length;
+  }
+
+  // Require stability for ~600ms
+  if (stableTicks < 2) return;
+
+  clearInterval(wait);
+
+  const totalPages = canvases.length;
+
+  Object.keys(pageContentMap)
+    .map(n => parseInt(n, 10))
+    .filter(n => !isNaN(n) && n <= totalPages)
+    .sort((a, b) => a - b)
+    .forEach(pageNum => {
+      const html = pageContentMap[pageNum]?.content;
+      if (!html) return;
+
+      const block = document.createElement("div");
+      block.innerHTML = html;
+
+      if (pageNum === 1) {
+        canvases[0].before(block);
+      } else {
+        const prev = canvases.find(
+          c => Number(c.dataset.page) === pageNum - 1
+        );
+        prev?.after(block);
+      }
+    });
+
+  buildSidebar(totalPages);
+}, 300);
+
+
+
+  /* ------------------------------------------------------------
+     4. Edge-style Sidebar Navigation
+     ------------------------------------------------------------ */
+  function buildSidebar(totalPages) {
+    const sidebar = document.createElement("div");
+    sidebar.id = "pdf-dynamic-sidebar";
+    sidebar.innerHTML = `
+      <h4>📑 Document Map</h4>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Pages</div>
+        <ul id="page-nav"></ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Sections</div>
+        <ul id="section-nav"></ul>
+      </div>
+    `;
+    document.body.appendChild(sidebar);
+
+    const handle = document.createElement("div");
+    handle.id = "pdf-sidebar-handle";
+    handle.textContent = "☰";
+    document.body.appendChild(handle);
+
+    handle.onclick = () => sidebar.classList.toggle("open");
+
+    const pageUL = sidebar.querySelector("#page-nav");
+    const secUL = sidebar.querySelector("#section-nav");
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement("li");
+      li.innerHTML = `Page ${i} <span class="badge">PDF</span>`;
+      li.onclick = () => {
+        document.querySelector(`canvas[data-page="${i}"]`)
+          ?.scrollIntoView({ behavior:"smooth" });
+        highlight(li, pageUL);
+      };
+      pageUL.appendChild(li);
+
+      if (pageContentMap[i]) {
+        const sli = document.createElement("li");
+        sli.innerHTML = `Section ${i} <span class="badge">HTML</span>`;
+        sli.onclick = () => {
+          document.getElementById(`section-page-${i}`)
+            ?.scrollIntoView({ behavior:"smooth" });
+          highlight(sli, secUL);
+        };
+        secUL.appendChild(sli);
+      }
+    }
+
+    function highlight(active, list){
+      list.querySelectorAll("li").forEach(l=>l.classList.remove("active"));
+      active.classList.add("active");
+    }
+
+    /* Touch swipe */
+    let sx=0;
+    document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+    document.addEventListener("touchend",e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      if(dx>90) sidebar.classList.add("open");
+      if(dx<-90) sidebar.classList.remove("open");
+    });
+  }
+
+})();
+
+</script>
+<script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+</body>
+</html>
