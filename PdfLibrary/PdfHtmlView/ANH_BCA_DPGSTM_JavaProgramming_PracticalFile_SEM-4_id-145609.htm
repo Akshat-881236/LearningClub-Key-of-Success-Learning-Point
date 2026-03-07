@@ -1,0 +1,1071 @@
+<!--
+============================================================
+  Akshat Network Hub - Universal PDF Viewer (Print-Protected Final)
+  Author   : Akshat Prasad
+  Identity : Akshat Network | Open Web Initiative
+  Purpose  : Dual-Watermark PDF Viewer + Strict Print Restriction
+  License  : MIT
+============================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/LearningClub-Key-of-Success-Learning-Point/lock_iframe_view.js" async></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Programming Practical File | Secure PDF Viewer</title>
+  <link rel="icon" type="image/png" href="https://akshat-881236.github.io/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/icon-144.png">
+  <style>
+    body {
+      margin: 0;
+      background: #f4f6fa;
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    header {
+      background: #0b4f6c;
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    #pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px;
+      transition: background 0.3s ease;
+    }
+    canvas {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      background: #fff;
+      max-width: 95%;
+      height: auto;
+    }
+
+    /* Floating Toolbar */
+    .toolbar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: row;
+      background: #0b4f6c;
+      border-radius: 40px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      z-index: 1000;
+    }
+    .toolbar button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 18px;
+      margin: 0 6px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .toolbar button:hover {
+      transform: scale(1.2);
+    }
+
+    /* Status Overlay */
+    #status-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 2000;
+    }
+    .status-box {
+      background: #fff;
+      color: #222;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 280px;
+    }
+    .status-step {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .status-bar {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 6px;
+      width: 0;
+      background: #0b4f6c;
+      transition: width 0.4s ease;
+    }
+    .status-message {
+      font-size: 14px;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .toolbar { flex-wrap: wrap; bottom: 10px; right: 10px; }
+      .toolbar button { font-size: 16px; margin: 4px; }
+    }
+
+    @media print {
+      body::before {
+        content: "⚠ Printing of this document is restricted. Redirecting to policy page...";
+        display: block;
+        text-align: center;
+        color: #c00;
+        font-size: 20px;
+        margin-top: 40vh;
+      }
+      body *:not(::before) { display: none !important; }
+    }
+
+    /* Themes */
+    body.light { background: #f4f6fa; color: #222; }
+    body.dark { background: #111; color: #eee; }
+    body.dragon { background: #250000; color: #ffcc00; }
+    body.forest { background: #013220; color: #d0ffd0; }
+    body.ocean { background: #001f3f; color: #aee7ff; }
+    body.midnight { background: #0a0a23; color: #c2d3ff; }
+  </style>
+</head>
+<body class="light">
+
+  <header>📘 Akshat Network Hub – Learning Club Secure PDF Viewer</header>
+
+  <div id="pdf-viewer" href="/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/ANH_BCA_DPGSTM_JavaProgramming_PracticalFile_SEM-4_id-145609.pdf"></div>
+
+  <!-- Floating Toolbar -->
+  <div class="toolbar">
+    <button id="prevPage">⬅️</button>
+    <button id="nextPage">➡️</button>
+    <button id="zoomOut">➖</button>
+    <button id="zoomIn">➕</button>
+    <button id="modeToggle">📖</button>
+    <button id="themeToggle">🎨</button>
+    <button id="download-btn">💾</button>
+  </div>
+
+  <!-- Overlay for Processing -->
+  <div id="status-overlay">
+    <div class="status-box">
+      <div class="status-step">Processing...</div>
+      <div class="status-bar"><div class="progress"></div></div>
+      <div class="status-message">Initializing...</div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const pdfContainer = document.getElementById("pdf-viewer");
+    const pdfUrl = pdfContainer.getAttribute("href");
+    const logoUrl = "/LearningClub-Key-of-Success-Learning-Point/Assets/Icons/Icon.png";
+    const { jsPDF } = window.jspdf;
+    const pdfjsLib = window["pdfjs-dist/build/pdf"];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+    let pdfDoc = null, renderedPages = [], currentPage = 1, scale = 1.2, viewMode = "scroll";
+    const logoImage = new Image(); logoImage.src = logoUrl;
+    const themes = ["light","dark","dragon","forest","ocean","midnight"];
+    let currentThemeIndex = 0;
+
+    logoImage.onload = async () => renderPDF();
+
+    async function renderPDF() {
+      pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+      renderAllPages();
+    }
+
+    async function renderAllPages() {
+      pdfContainer.innerHTML = "";
+      renderedPages = [];
+      const total = pdfDoc.numPages;
+
+      for (let i = 1; i <= total; i++) {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        applyWatermarks(canvas, logoImage);
+        canvas.dataset.page = i;
+        pdfContainer.appendChild(canvas);
+        renderedPages.push(canvas);
+      }
+      updateBookView();
+    }
+
+    function applyWatermarks(canvas, logo) {
+      const ctx = canvas.getContext("2d");
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.font = "bold 36px Inter";
+      ctx.fillStyle = "#0b4f6c";
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(-Math.PI / 4);
+      const text = "© Akshat Network Hub";
+      const spacing = 200;
+      ctx.fillText(text, -250, -spacing);
+      ctx.fillText(text, -250, 0);
+      ctx.fillText(text, -250, spacing);
+      ctx.restore();
+
+      const logoSize = 80;
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(logo, canvas.width - logoSize - 20, canvas.height - logoSize - 20, logoSize, logoSize);
+      ctx.globalAlpha = 1;
+    }
+
+    function updateBookView() {
+      renderedPages.forEach(c => c.style.display = (viewMode === "book" ? "none" : "block"));
+      if (viewMode === "book") renderedPages[currentPage - 1].style.display = "block";
+    }
+
+    document.getElementById("prevPage").onclick = () => {
+      if (viewMode === "book" && currentPage > 1) {
+        currentPage--; updateBookView();
+      }
+    };
+    document.getElementById("nextPage").onclick = () => {
+      if (viewMode === "book" && currentPage < renderedPages.length) {
+        currentPage++; updateBookView();
+      }
+    };
+    document.getElementById("zoomIn").onclick = () => { scale += 0.2; renderAllPages(); };
+    document.getElementById("zoomOut").onclick = () => { if (scale > 0.6) scale -= 0.2; renderAllPages(); };
+    document.getElementById("modeToggle").onclick = () => {
+      viewMode = (viewMode === "scroll") ? "book" : "scroll"; updateBookView();
+    };
+    document.getElementById("themeToggle").onclick = () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      document.body.className = themes[currentThemeIndex];
+    };
+
+    // Swipe gestures
+    let startX = 0;
+    pdfContainer.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    pdfContainer.addEventListener("touchend", e => {
+      let diff = e.changedTouches[0].clientX - startX;
+      if (viewMode === "book") {
+        if (diff < -50 && currentPage < renderedPages.length) currentPage++;
+        if (diff > 50 && currentPage > 1) currentPage--;
+        updateBookView();
+      }
+    });
+
+    // Download with progress
+    const statusOverlay = document.getElementById("status-overlay");
+    const progress = document.querySelector(".progress");
+    const stepTitle = document.querySelector(".status-step");
+    const stepMsg = document.querySelector(".status-message");
+    const steps = [
+      { msg: "Preparing PDF...", color: "#0b4f6c" },
+      { msg: "Rendering pages...", color: "#1597e5" },
+      { msg: "Applying watermark...", color: "#f4a261" },
+      { msg: "Building final file...", color: "#2a9d8f" },
+      { msg: "Finalizing & downloading...", color: "#264653" }
+    ];
+
+    async function downloadPDFWithWatermark() {
+      statusOverlay.style.display = "flex";
+      const totalSteps = steps.length;
+      const doc = new jsPDF();
+      for (let i = 0; i < steps.length; i++) {
+        const s = steps[i];
+        progress.style.background = s.color;
+        progress.style.width = `${((i + 1) / totalSteps) * 100}%`;
+        stepTitle.textContent = `Step ${i + 1} of ${totalSteps}`;
+        stepMsg.textContent = `${s.msg} (${Math.round(((i + 1) / totalSteps) * 100)}%)`;
+        await new Promise(r => setTimeout(r, 700));
+      }
+      for (let i = 0; i < renderedPages.length; i++) {
+        const img = renderedPages[i].toDataURL("image/png");
+        doc.addImage(img, "PNG", 0, 0, 210, 297);
+        if (i < renderedPages.length - 1) doc.addPage();
+      }
+      /* Trigger download and save pdf with Title of the document or Custom Title if User Set when he clicks the download button */
+      /* First ask user for custom title */
+      let customTitle = prompt("Enter a title for the downloaded PDF:", "ANH_BCA_DPGSTM_JavaProgramming_PracticalFile_SEM-4_id-145609");
+      if (!customTitle || customTitle.trim() === "") { customTitle = "ANH_BCA_DPGSTM_JavaProgramming_PracticalFile_SEM-4_id-145609"; }
+      doc.save(`${customTitle}.pdf`);
+      stepMsg.textContent = "✅ Completed successfully!";
+      setTimeout(() => { statusOverlay.style.display = "none"; progress.style.width = "0"; }, 1000);
+    }
+    document.getElementById("download-btn").onclick = downloadPDFWithWatermark;
+
+    // Print restriction
+    const redirectToPolicy = () => {
+      const currentPage = encodeURIComponent(window.location.pathname);
+      window.location.href = `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${currentPage}`;
+    };
+    window.addEventListener("beforeprint", e => { e.preventDefault(); window.stop(); redirectToPolicy(); });
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") { e.preventDefault(); redirectToPolicy(); }
+    });
+    window.addEventListener("contextmenu", e => {
+      if (e.target.tagName.toLowerCase().includes("canvas")) {
+        e.preventDefault(); alert("Printing of this document is restricted by policy.");
+      }
+    });
+    window.matchMedia("print").addEventListener("change", mql => {
+      if (mql.matches) redirectToPolicy();
+    });
+  </script>
+  <script>
+/* ============================================================
+   UPGRADE 1: FAB-LIKE TOOLBAR (EXPAND / COLLAPSE)
+   ============================================================ */
+
+(function () {
+  const toolbar = document.querySelector(".toolbar");
+  if (!toolbar) return;
+
+  toolbar.style.transition = "all 0.35s ease";
+  toolbar.style.overflow = "hidden";
+  toolbar.style.width = "48px";
+  toolbar.style.padding = "6px";
+
+  let expanded = false;
+
+  const expandToolbar = () => {
+    if (expanded) return;
+    toolbar.style.width = "auto";
+    toolbar.style.padding = "6px 12px";
+    toolbar.classList.add("expanded");
+    expanded = true;
+  };
+
+  const collapseToolbar = () => {
+    if (!expanded) return;
+    toolbar.style.width = "48px";
+    toolbar.style.padding = "6px";
+    toolbar.classList.remove("expanded");
+    expanded = false;
+  };
+
+  toolbar.addEventListener("mouseenter", expandToolbar);
+  toolbar.addEventListener("mouseleave", collapseToolbar);
+
+  // Mobile touch support
+  toolbar.addEventListener("click", () => {
+    expanded ? collapseToolbar() : expandToolbar();
+  });
+})();
+
+/* ============================================================
+   UPGRADE 2: SECURITY & REDIRECTION HARDENING
+   ============================================================ */
+
+(function () {
+  const redirectViolation = (reason) => {
+    console.warn("Security Policy Triggered:", reason);
+    const from = encodeURIComponent(window.location.pathname);
+    window.location.href =
+      `/LearningClub-Key-of-Success-Learning-Point/No_print.htm?from=${from}&reason=${encodeURIComponent(reason)}`;
+  };
+
+  /* --------- 1. BLOCK SCREENSHOT KEYS --------- */
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+
+    // Print Screen
+    if (key === "printscreen") {
+      e.preventDefault();
+      redirectViolation("Screenshot attempt detected");
+    }
+
+    // Windows Snipping Tool / macOS screenshot combos
+    if (
+      (e.metaKey && e.shiftKey && ["3", "4", "5"].includes(key)) ||
+      (e.ctrlKey && e.shiftKey && key === "s")
+    ) {
+      e.preventDefault();
+      redirectViolation("Screen capture shortcut blocked");
+    }
+  });
+
+  /* --------- 2. VISIBILITY / TAB SWITCH DETECTION --------- */
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      redirectViolation("Tab switch or background activity detected");
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    redirectViolation("Window focus lost");
+  });
+
+  /* --------- 3. BLOCK NEW TAB / WINDOW OPENING --------- */
+  const originalOpen = window.open;
+  window.open = function () {
+    alert("Opening new tabs or windows is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/blocked.htm";
+    redirectViolation("New tab or window blocked");
+    return null;
+  };
+
+  /* --------- 4. IFRAME EMBED BLOCK (FRAME BUSTING) --------- */
+  if (window.top !== window.self) {
+    redirectViolation("Iframe embedding blocked");
+    alert("This content cannot be displayed in an embedded frame.");
+    alert("Redirecting to secure viewer...");
+    window.top.location = window.self.location;
+  }
+
+  /* --------- 5. DEVTOOLS / INSPECT DETERRENCE --------- */
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(e.key.toLowerCase())) ||
+      (e.ctrlKey && e.key.toLowerCase() === "u")
+    ) {
+      e.preventDefault();
+      alert("Developer tools access is restricted.");
+      /* Redirecting User to /LearningClub-Key-of-Success-Learning-Point/Error/permission.htm */
+      alert("Redirecting to permission error page...");
+      window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+      redirectViolation("Developer tools blocked");
+    }
+  });
+
+  /* --------- 6. DISABLE TEXT SELECTION & COPY --------- */
+  document.addEventListener("selectstart", e => e.preventDefault());
+  document.addEventListener("copy", e => {
+    e.preventDefault();
+    alert("Copying content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Copy action blocked");
+  });
+  document.addEventListener("cut", e => {
+    e.preventDefault();
+    alert("Cutting content is restricted.");
+    window.location.href = "/LearningClub-Key-of-Success-Learning-Point/Error/permission.htm";
+    redirectViolation("Cut action blocked");
+  });
+
+})();
+
+/* ============================================================
+   Akshat Network Hub
+   Rich Dynamic PDF Sections + Edge-style Sidebar
+   ============================================================ */
+
+(function () {
+
+  /* ------------------------------------------------------------
+     1. Inner CSS (Edge-like polish)
+     ------------------------------------------------------------ */
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .page-content-section{
+      max-width:920px;
+      margin:32px auto;
+      padding:26px 30px;
+      background:linear-gradient(180deg,#ffffff,#f6f9fc);
+      border-radius:14px;
+      border:1px solid #e3e8ef;
+      box-shadow:0 10px 28px rgba(0,0,0,0.08);
+      font-family:Inter,system-ui,sans-serif;
+    }
+
+    .page-content-section h3{
+      font-size:1.15rem;
+      font-weight:700;
+      color:#0b4f6c;
+      margin:0 0 6px;
+    }
+
+    .page-content-section .meta{
+      font-size:.8rem;
+      color:#666;
+      margin-bottom:14px;
+    }
+
+    .page-content-section p{
+      font-size:.95rem;
+      line-height:1.75;
+      color:#222;
+      margin:0 0 10px;
+    }
+
+    .chip{
+      display:inline-block;
+      background:#e8f2f8;
+      color:#0b4f6c;
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:.75rem;
+      font-weight:600;
+      margin-right:6px;
+    }
+
+    /* Sidebar (Edge-style) */
+    #pdf-dynamic-sidebar{
+      position:fixed;
+      top:50%;
+      left:-280px;
+      transform:translateY(-50%);
+      width:280px;
+      height:78vh;
+      background:#0e3a52;
+      color:#fff;
+      padding:16px 14px;
+      border-radius:0 18px 18px 0;
+      box-shadow:0 10px 28px rgba(0,0,0,.55);
+      transition:left .35s ease;
+      z-index:1600;
+      overflow-y:auto;
+    }
+    #pdf-dynamic-sidebar.open{ left:0; }
+
+    #pdf-dynamic-sidebar h4{
+      margin:0 0 14px;
+      font-size:1.05rem;
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+
+    .nav-group{
+      margin-bottom:16px;
+    }
+
+    .nav-group-title{
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      opacity:.7;
+      margin-bottom:6px;
+    }
+
+    #pdf-dynamic-sidebar ul{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+
+    #pdf-dynamic-sidebar li{
+      padding:9px 10px;
+      margin-bottom:6px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:.9rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:background .25s;
+    }
+
+    #pdf-dynamic-sidebar li:hover{
+      background:rgba(255,255,255,.14);
+    }
+
+    #pdf-dynamic-sidebar li.active{
+      background:rgba(255,255,255,.25);
+      font-weight:600;
+    }
+
+    .badge{
+      background:rgba(255,255,255,.25);
+      padding:2px 8px;
+      border-radius:10px;
+      font-size:.7rem;
+    }
+
+    #pdf-sidebar-handle{
+      position:fixed;
+      top:50%;
+      left:0;
+      transform:translateY(-50%);
+      background:#0e3a52;
+      color:#fff;
+      padding:12px 8px;
+      border-radius:0 8px 8px 0;
+      cursor:pointer;
+      z-index:1700;
+      font-size:16px;
+      box-shadow:0 4px 12px rgba(0,0,0,.4);
+    }
+  `;
+  document.head.appendChild(style);
+
+  /* ------------------------------------------------------------
+     2. Rich Content Map (2-page PDF)
+     ------------------------------------------------------------ */
+  const pageContentMap = {
+  1: {
+    content: `
+      <section class="page-content-section" id="section-page-1">
+        <h3>Java Programming Practical File - BCA SEM-4</h3>
+
+        <div class="meta">Computer Science • Java Programming</div>
+
+        <span class="chip">BCA SEM - 4 Practical File</span>
+        <span class="chip">Java Programming</span>
+        <span class="chip">Java Applet</span>
+
+        <p>
+          This page represents the <strong>BCA SEM - 4 Java Programming Practical File Lab Manual Document</strong>, listing all the practical perform by me in DPG Degree college, Gurugram. The document serves as a comprehensive record of the practical exercises completed during the semester, showcasing the application of theoretical concepts in Java programming through hands-on lab work.
+        </p>
+        <p>
+            Each Program is implemented in Java language and include the code and the snapshot of the output of the program. Additionally, the pdf document not contain descriptions but it is dynamically injected between pdf pages by the array <code>pageContentMap</code> in the HTML file, which allows for a more interactive and engaging presentation of the practical exercises. The content is structured to provide a clear overview of each program, its purpose, and the results obtained, making it a valuable resource for students and educators alike.
+        </p>
+        <p>
+            Page No. 2 contain certificate of Completion of the practical file and 3 contain the Index of the programs and the rest of the pages contain the description of each program and the snapshot of the output of the program.
+        </p>
+      </section>
+    `
+  },
+  4: {
+    content: `
+      <section class="page-content-section" id="section-page-2">
+        <h3>Program - 1</h3>
+
+        <div class="meta">Write a Java program to define a class "Student" with data members for name and age. Include member functions to input and display the details of a student.</div>
+
+        <span class="chip">Member Functions</span>
+        <span class="chip">Class and Objects</span>
+        <span class="chip">Program1.java</span>
+
+        <p>
+          This file is saved with the name "Program1.java" that contain <code>public class Program1</code> which define a static class named "Student" with five data members: "name" , "fatherName" (a String) , "age" . "studentId" (an integer) and "RegistrationNumber" (a BigInteger) . The class includes member functions to input the details of a student and to display those details. The input function prompts the user to enter the student's name, father's name, age, student ID, and registration number, while the display function outputs these details in a formatted manner. This program demonstrates the basic principles of object-oriented programming in Java, including class definition, data encapsulation, and member functions for handling student information.
+        </p>
+
+        <p>
+            For Demonstration, the programmer i.e., me, have enter my own details in the input function and the output of the program is the details of me that is displayed on the console when the program is executed. See the snapshot of the output of the program on page no. 5 of the pdf document.
+        </p>
+      </section>
+    `
+  },
+  6: {
+    content: `
+      <section class="page-content-section" id="section-page-3">
+        <h3>Program - 2</h3>
+
+        <div class="meta">  Create a Java program to demonstrate method overloading by creating multiple methods with the same name but different parameters in a class.  </div>
+
+        <span class="chip">Method Overloading</span>
+        <span class="chip">Parameters in Java</span>
+        <span class="chip">Program2.java</span>
+
+        <p>
+            This file is saved with the name "Program2.java" that contain <code>public class Program2</code> which demonstrates method overloading in Java. This public class contains three overloaded methods named "add" that perform addition operations with different parameter types and counts. The first method takes two integers and returns their sum, the second method takes three integers and returns their sum, and the third method takes two double values and returns their sum. The main method creates an instance of the Program2 class and calls each of the overloaded "add" methods with appropriate arguments, displaying the results on the console. This program effectively illustrates how method overloading allows multiple methods to have the same name while performing different operations based on their parameters in Java.
+        </p>
+      </section>
+    `
+  },
+  7: {
+    content: `
+      <section class="page-content-section" id="section-page-4">
+        <h3>Program - 3</h3>
+
+        <div class="meta"> Create a Java program to demonstrate method overriding by creating a base class "Animal" and a derived class "Dog" that overrides a method from the base class.  </div>
+
+        <span class="chip">Method Overriding</span>
+        <span class="chip">Program 3</span>
+        <span class="chip">Program3.java</span>
+        <span class="chip">Class Hierarchy</span>
+
+        <p>
+            This file is saved with the name "Program3.java" that contain <code>public class Program3</code> which demonstrates method overriding in Java. The program defines a base class named "Animal" with a method called "void Sound()" that prints a generic sound message. The derived class "Dog" extends the "Animal" class and overrides the "void Sound()" method to provide a specific implementation that prints a dog-specific sound message. In the main method, an instance of the Dog class is created, and the overridden "void Sound()" method is called, showcasing how the Dog class provides its own version of the method while still being part of the Animal class hierarchy. This program effectively illustrates the concept of method overriding in Java, allowing subclasses to provide specific implementations of methods defined in their superclass.
+        </p>
+      </section>
+    `
+  },
+  8: {
+    content: `
+      <section class="page-content-section" id="section-page-5">
+        <h3>Program - 4</h3>
+
+        <div class="meta"> Implement a Java program to define an abstract class "Shape" with an abstract method "draw()". Create derived classes "Circle" and "Square" that implement the "draw()" method. </div>
+
+        <span class="chip">Abstract Classes</span>
+        <span class="chip">Program 4</span>
+        <span class="chip">Program4.java</span>
+        <span class="chip">Shape Drawing</span>
+
+        <p>
+            This file is saved with the name "Program4.java" that contain <code>public class Program4</code> which demonstrates the use of abstract classes in Java. The program defines an abstract class named "Shape" that contains an abstract method "void draw()". Two derived classes, "Circle" and "Square", extend the "Shape" class and provide concrete implementations of the "void draw()" method to display messages indicating that a circle or square is being drawn. In the main method, instances of both Circle and Square are created, and their respective draw methods are called to demonstrate polymorphism and the concept of abstraction in Java programming.
+        </p>
+      </section>
+    `
+  },
+  9: {
+    content: `
+      <section class="page-content-section" id="section-page-6">
+        <h3>Program - 5</h3>
+
+        <div class="meta"> Implement a Java program to demonstrate the use of the "Vector" class by performing operations like adding, removing, and displaying elements of a vector. </div>
+
+        <span class="chip">Vector</span>
+        <span class="chip">Program 5</span>
+        <span class="chip">Program5.java</span>
+        <span class="chip">Dynamic Array</span>
+
+        <p>
+            This file is saved with the name "Program5.java" that contain <code>public class Program5</code> which demonstrates the use of the "Vector" class in Java. The program creates an instance of the Vector class to store a collection of string elements. It performs various operations such as adding elements to the vector, removing an element, and displaying the contents of the vector. The main method showcases how to utilize the Vector class's methods to manipulate and access the elements, illustrating the dynamic array capabilities provided by the Vector class in Java.
+        </p>
+        <p>
+            For Demonstration, the programmer i.e., me, have added some string elements (fruits) to the vector, removed one element, and displayed the remaining elements on the console when the program is executed. See the snapshot of the output of the program on page no. 9 of the pdf document.
+        </p>
+      </section>
+    `
+  },
+  10: {
+    content: `
+      <section class="page-content-section" id="section-page-7">
+        <h3>Program - 6</h3>
+
+        <div class="meta"> Write a Java program to create a user-defined package and use it in another class.</div>
+
+        <span class="chip">Packages</span>
+        <span class="chip">Program 6</span>
+        <span class="chip">Program6.java</span>
+        <span class="chip">User-Defined Package</span>
+
+        <p>
+            This file is saved with the name "Program6.java" that contain <code>public class Program6</code> which demonstrates the creation and use of a user-defined package in Java. 
+        </p>
+        <div class="code-block" style="background:#f4f6fa; padding:12px; border-radius:8px; border:1px solid #e3e8ef; margin:16px 0;">
+          <pre style="margin:0; font-family:Consolas,monospace; font-size:.9rem;">
+            // Program6.java
+            public class Program6 {
+                    // Simulated package class
+
+                    static class Message {
+                        public void show() { 
+            System.out.println("Hello from user defined package"); 
+        }
+    }
+            public static void main(String[] args) { 
+ 
+        Message obj = new Message(); 
+        obj.show(); 
+ 
+    } 
+} 
+          </pre>
+        </div>
+        <p>
+            In this program, we have defined a static inner class named "Message" that simulates a user-defined package. The Message class contains a method called "show()" that prints a message to the console. In the main method of Program6, we create an instance of the Message class and call the show() method to demonstrate how to use a user-defined package in Java. This program effectively illustrates the concept of packages and how they can be utilized to organize classes in Java programming.
+        </p> 
+      </section>
+    `
+  },
+  11: {
+    content: `
+      <section class="page-content-section" id="section-page-8">
+        <h3>Program - 7</h3>
+
+        <div class="meta"> Create a Java program to handle multiple exceptions using try-catch blocks. </div>
+
+        <span class="chip">Exceptions Handling</span>
+        <span class="chip">Program 7</span>
+        <span class="chip">Program7.java</span>
+        <span class="chip">Multiple Exceptions</span>
+
+        <p>
+          This program demonstrates how to handle multiple exceptions in Java using try-catch blocks. It shows the usage of different exception types and how to catch them separately or together. The program includes a try block that may throw multiple exceptions, such as ArithmeticException and ArrayIndexOutOfBoundsException. Each exception is caught in its respective catch block, allowing for specific handling of each error type. Additionally, a general catch block is included to handle any other unforeseen exceptions. This structure ensures that the program can gracefully handle various error scenarios without crashing, demonstrating robust exception handling practices in Java.
+        </p>
+      </section>
+    `
+  },
+  12: {
+    content: `
+      <section class="page-content-section" id="section-page-9">
+        <h3>Program - 8</h3>
+
+        <div class="meta">  Implement a Java program to demonstrate the use of the "finally" statement in exception handling.</div>
+
+        <span class="chip">Exceptions Handling</span>
+        <span class="chip">Program 8</span>
+        <span class="chip">Program8.java</span>
+        <span class="chip">Finally Statement</span>
+
+        <p>
+          This program demonstrates the use of the "finally" statement in exception handling. The "finally" block is executed regardless of whether an exception is thrown or not, making it useful for cleanup activities such as closing resources or releasing memory. In this program, we have a try block that may throw an exception, and a catch block to handle that exception. The finally block contains code that will execute after the try and catch blocks, ensuring that certain actions are performed even if an error occurs. This illustrates how the finally statement can be used to maintain the integrity of the program and ensure that necessary cleanup is always performed.
+        </p>
+      </section>
+    `
+  },
+  13: {
+    content: `
+      <section class="page-content-section" id="section-page-10">
+        <h3>Program - 9</h3>
+
+        <div class="meta"> Write a Java program to create and throw a custom exception.</div>
+
+        <span class="chip">Custom Exceptions</span>
+        <span class="chip">Program 9</span>
+        <span class="chip">Program9.java</span>
+        <span class="chip">Exception Throwing</span>
+
+        <p>
+          This program demonstrates how to create and throw a custom exception in Java. It shows the implementation of a user-defined exception class and its usage in handling specific error conditions. The program includes a try block that may throw the custom exception, and a catch block to handle it. This illustrates how custom exceptions can be used to provide more meaningful error messages and improve the overall robustness of the program. By defining a custom exception, developers can create specific error types that are relevant to their application's domain, making it easier to identify and handle errors effectively.
+        </p>
+      </section>
+    `
+  },
+  14: {
+    content: `
+      <section class="page-content-section" id="section-page-11">
+        <h3>Program - 10</h3>
+
+        <div class="meta">Create a Java program to implement a multithreaded application by extending the "Thread" class. </div>
+
+        <span class="chip">Multithreading</span>
+        <span class="chip">Program 10</span>
+        <span class="chip">Program10.java</span>
+        <span class="chip">Thread Extension</span>
+
+        <p>
+          This program implements a multithreaded application in Java by extending the "Thread" class. It demonstrates how to create and manage multiple threads of execution within a single Java program, allowing for concurrent execution of different tasks. The program defines a class that extends the Thread class and overrides the run() method to specify the code that will be executed by each thread. In the main method, multiple instances of the thread class are created and started, showcasing how to run multiple threads simultaneously. This illustrates the concept of multithreading in Java and how it can be used to improve the performance and responsiveness of applications by allowing multiple operations to occur at the same time.
+        </p>
+      </section>
+    `
+  },
+  15: {
+    content: `
+      <section class="page-content-section" id="section-page-12">
+        <h3>Program - 11</h3>
+
+        <div class="meta"> Implement a Java program to demonstrate thread synchronization. </div>
+
+        <span class="chip">Multithreading</span>
+        <span class="chip">Program 11</span>
+        <span class="chip">Program11.java</span>
+        <span class="chip">Thread Synchronization</span>
+
+        <p>
+          This program demonstrates thread synchronization in Java. It shows how to use synchronized methods and blocks to ensure that only one thread can access a particular resource at a time, preventing race conditions and ensuring data consistency in a multithreaded environment. The program includes a shared resource that multiple threads attempt to access and modify. By synchronizing the critical sections of code that access the shared resource, the program ensures that the threads do not interfere with each other, allowing for safe and predictable execution. This illustrates the importance of thread synchronization in Java programming to maintain the integrity of shared data and avoid concurrency issues.
+        </p>
+      </section>
+    `
+  },
+  17: {
+    content: `
+      <section class="page-content-section" id="section-page-13">
+        <h3>Program - 12</h3>
+
+        <div class="meta"> Create a Java program to read and write data to a file using "FileInputStream" and "FileOutputStream".</div>
+
+        <span class="chip">File I/O</span>
+        <span class="chip">Program 12</span>
+        <span class="chip">Program12.java</span>
+        <span class="chip">FileInputStream</span>
+        <span class="chip">FileOutputStream</span>
+
+        <p>
+            This program demonstrates how to read and write data to a file in Java using "FileInputStream" and "FileOutputStream". It shows how to create a file, write data to it, and then read the data back from the file. The program includes error handling to manage potential exceptions that may occur during file operations. By using FileOutputStream, the program writes byte data to the file, and with FileInputStream, it reads the byte data back into the program. This illustrates the basic principles of file input/output in Java and how to work with files effectively. The program can be used to demonstrate how to handle file operations, including creating, writing, and reading files, which are essential skills in Java programming for data persistence and manipulation.
+        </p>
+      </section>
+    `
+  },
+  19: {
+    content: `
+      <section class="page-content-section" id="section-page-14">
+        <h3>Program - 13</h3>
+
+        <div class="meta">  Write a Java applet to display "Hello, World!".</div>
+
+        <span class="chip">Java Applet</span>
+        <span class="chip">Program 13</span>
+        <span class="chip">Program13.java</span>
+        <span class="chip">Graphics</span>
+
+        <p>
+            This program is a simple Java applet that displays the message "Hello, World!" on the screen. It demonstrates the basic structure of a Java applet, including the use of the paint() method to render graphics on the applet's display area. The program extends the Applet class and overrides the paint() method to draw the string "Hello, World!" at a specified location on the applet window. This illustrates how to create a basic graphical application using Java applets, which can be embedded in web pages to provide interactive content. Note that Java applets are now considered outdated technology and may not be supported in modern web browsers, but this program serves as an educational example of Java's graphical capabilities.
+        </p>
+      </section>
+    `
+  },
+  20 : {
+    content: `
+      <section class="page-content-section" id="section-page-15">
+        <h3>Program - 14</h3>
+
+        <div class="meta">Create a Java applet to demonstrate the use of the "APPLET" tag and pass parameters to the applet.</div>
+
+        <span class="chip">APPLET Tag</span>
+        <span class="chip">Program 14</span>
+        <span class="chip">Program14.java</span>
+        <span class="chip">Applet Parameters</span>
+
+        <p>
+            This program is a Java applet that demonstrates the use of the "APPLET" tag and how to pass parameters to the applet. The applet reads parameters defined in the HTML file using the getParameter() method and displays them on the screen. The program extends the Applet class and overrides the paint() method to render the parameter values as strings on the applet window. This illustrates how to create a dynamic applet that can receive input from the HTML page, allowing for greater flexibility and interactivity in Java applets. Note that Java applets are now considered outdated technology and may not be supported in modern web browsers, but this program serves as an educational example of how to work with applet parameters in Java.
+        </p>
+        <p>
+            For Security reasons, modern browsers do not support Java applets, and this program may not run in current web environments. However, it serves as a historical example of how Java applets were used to create interactive web content in the past. So In document , I only demonstrate the code of the program and the snapshot of the output of the program on page no. 20 of the pdf document without actually running the applet in browser and I not used any .html file to run the applet because of the security restrictions on Java applets in modern browsers. See the snapshot of the output of the program on page no. 20 of the pdf document.
+        </p>
+      </section>
+    `
+  },
+  21: {
+    content: `
+      <section class="page-content-section" id="section-page-16">
+        <h3>Program - 15</h3>
+
+        <div class="meta"> Create a Java program to demonstrate the use of AWT controls like buttons, labels, and text fields. </div>
+
+        <span class="chip">AWT controls</span>
+        <span class="chip">Program 15</span>
+        <span class="chip">Program15.java</span>
+        <span class="chip">AWT</span>
+
+        <p>
+          This program demonstrates the use of AWT (Abstract Window Toolkit) controls in Java, including buttons, labels, and text fields. It shows how to create a simple GUI application using AWT components and handle user interactions. The program creates a window with a label, a text field for user input, and a button. When the button is clicked, the program retrieves the text entered in the text field and updates the label to display the input. This illustrates how to use AWT controls to build interactive graphical user interfaces in Java. Note that AWT is an older GUI toolkit, and modern Java applications typically use Swing or JavaFX for more advanced features and better performance, but this program serves as an educational example of AWT controls in Java.
+        </p>
+      </section>
+    `
+  }
+};
+
+/* ------------------------------------------------------------
+     3. Inject Content Around PDF Pages
+     ------------------------------------------------------------ */
+  /* ------------------------------------------------------------
+   Reliable Content Injection (Refresh-Safe)
+   ------------------------------------------------------------ */
+let lastCanvasCount = 0;
+let stableTicks = 0;
+
+const wait = setInterval(() => {
+  const canvases = [...document.querySelectorAll("canvas[data-page]")];
+
+  if (!canvases.length) return;
+
+  // Check if canvas count stopped increasing
+  if (canvases.length === lastCanvasCount) {
+    stableTicks++;
+  } else {
+    stableTicks = 0;
+    lastCanvasCount = canvases.length;
+  }
+
+  // Require stability for ~600ms
+  if (stableTicks < 2) return;
+
+  clearInterval(wait);
+
+  const totalPages = canvases.length;
+
+  Object.keys(pageContentMap)
+    .map(n => parseInt(n, 10))
+    .filter(n => !isNaN(n) && n <= totalPages)
+    .sort((a, b) => a - b)
+    .forEach(pageNum => {
+      const html = pageContentMap[pageNum]?.content;
+      if (!html) return;
+
+      const block = document.createElement("div");
+      block.innerHTML = html;
+
+      if (pageNum === 1) {
+        canvases[0].before(block);
+      } else {
+        const prev = canvases.find(
+          c => Number(c.dataset.page) === pageNum - 1
+        );
+        prev?.after(block);
+      }
+    });
+
+  buildSidebar(totalPages);
+}, 300);
+
+
+
+  /* ------------------------------------------------------------
+     4. Edge-style Sidebar Navigation
+     ------------------------------------------------------------ */
+  function buildSidebar(totalPages) {
+    const sidebar = document.createElement("div");
+    sidebar.id = "pdf-dynamic-sidebar";
+    sidebar.innerHTML = `
+      <h4>📑 Document Map</h4>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Pages</div>
+        <ul id="page-nav"></ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Sections</div>
+        <ul id="section-nav"></ul>
+      </div>
+    `;
+    document.body.appendChild(sidebar);
+
+    const handle = document.createElement("div");
+    handle.id = "pdf-sidebar-handle";
+    handle.textContent = "☰";
+    document.body.appendChild(handle);
+
+    handle.onclick = () => sidebar.classList.toggle("open");
+
+    const pageUL = sidebar.querySelector("#page-nav");
+    const secUL = sidebar.querySelector("#section-nav");
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement("li");
+      li.innerHTML = `Page ${i} <span class="badge">PDF</span>`;
+      li.onclick = () => {
+        document.querySelector(`canvas[data-page="${i}"]`)
+          ?.scrollIntoView({ behavior:"smooth" });
+        highlight(li, pageUL);
+      };
+      pageUL.appendChild(li);
+
+      if (pageContentMap[i]) {
+        const sli = document.createElement("li");
+        sli.innerHTML = `Section ${i} <span class="badge">HTML</span>`;
+        sli.onclick = () => {
+          document.getElementById(`section-page-${i}`)
+            ?.scrollIntoView({ behavior:"smooth" });
+          highlight(sli, secUL);
+        };
+        secUL.appendChild(sli);
+      }
+    }
+
+    function highlight(active, list){
+      list.querySelectorAll("li").forEach(l=>l.classList.remove("active"));
+      active.classList.add("active");
+    }
+
+    /* Touch swipe */
+    let sx=0;
+    document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+    document.addEventListener("touchend",e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      if(dx>90) sidebar.classList.add("open");
+      if(dx<-90) sidebar.classList.remove("open");
+    });
+  }
+
+})();
+
+</script>
+<script src="/LearningClub-Key-of-Success-Learning-Point/PageNotFound.min.js" defer></script>
+</body>
+</html>

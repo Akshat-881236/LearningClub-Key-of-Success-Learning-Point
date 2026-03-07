@@ -102,5 +102,13 @@ const projects = [
         link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/CG_PracticalFile_Sem-4_BCA.htm",
         tags: ["Computer Graphics", "3D Graphics", "2D Graphics", "NEP 2020", "DSC", "Practical file","CG Programs","CG"],
         date: "2026-03-04"
+      },
+      {
+        title: "Java Programming Practical File",
+        desc: "Practical File of Java Programming Semester - 4 BCA Course having 15 Programs.",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/ANH_BCA_DPGSTM_JavaProgramming_PracticalFile_SEM-4_id-145609.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfHtmlView/ANH_BCA_DPGSTM_JavaProgramming_PracticalFile_SEM-4_id-145609.htm",
+        tags: ["Java Programming", "Object-Oriented Programming", "Core Java", "NEP 2020", "DSC", "Practical file","Java Programs","Java"],
+        date: "2026-03-07"
       }
     ];
