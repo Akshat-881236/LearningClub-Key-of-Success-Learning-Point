@@ -96,6 +96,14 @@ const projects = [
         date: "2026-01-25"
       },
       {
+        title: "Search Engine Optimization with AI - Full Course",
+        desc: "This document is a standard curriculum and structured Journey of How to become a expert Search Engine Optimizer and How to create top ranking websites ?",
+        pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/SEOwithAIfullCourse.pdf",
+        link: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/SEOwithAIfullCourse.htm",
+        tags: ["SEO", "Website", "24CSE001", "Media Query","Mobile optimization","SEO with AI","Course Overview"],
+        date: "2026-01-26"
+      },
+      {
         title: "Computer Graphics Practical File",
         desc: "Practical File of Computer Graphics Semester - 4 BCA Course having 15 Programs.",
         pdf: "/LearningClub-Key-of-Success-Learning-Point/PdfLibrary/PdfFiles/CG_PracticalFile_Sem-4_BCA.pdf",
